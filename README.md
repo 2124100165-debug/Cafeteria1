@@ -1,59 +1,352 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🔧 Reglas de Git - Kraneo Cafe
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## ⚠️ REGLA MÁS IMPORTANTE
 
-## About Laravel
+Nunca trabajar directamente sobre la rama:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```bash
+main
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+La rama `main` contiene el proyecto estable y original.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+# ✅ Flujo correcto de trabajo
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 1. Actualizar el proyecto antes de empezar
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Siempre hacer esto primero:
 
-## Laravel Sponsors
+```bash
+git checkout main
+git pull origin main
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Esto descarga los cambios más recientes del equipo.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# ✅ Crear una rama personal
 
-## Contributing
+Cada integrante debe crear su propia rama.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Ejemplos:
 
-## Code of Conduct
+```bash
+git checkout -b melissa-maquetacion
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+git checkout -b login-usuarios
+```
 
-## Security Vulnerabilities
+```bash
+git checkout -b crud-productos
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+# ✅ Revisar en qué rama estás
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Antes de trabajar:
+
+```bash
+git branch
+```
+
+La rama actual aparece con `*`
+
+Ejemplo:
+
+```bash
+* melissa-maquetacion
+main
+```
+
+---
+
+# ✅ Revisar qué archivos modificaste
+
+```bash
+git status
+```
+
+Esto sirve para:
+
+* ver archivos modificados
+* ver archivos nuevos
+* verificar qué se subirá
+
+---
+
+# ✅ Guardar cambios correctamente
+
+## Agregar archivos
+
+```bash
+git add .
+```
+
+---
+
+## Crear commit
+
+```bash
+git commit -m "Descripción clara del cambio"
+```
+
+Ejemplos:
+
+```bash
+git commit -m "Se agrega login de usuarios"
+```
+
+```bash
+git commit -m "Se corrige navbar del dashboard"
+```
+
+---
+
+# ✅ Subir SOLO tu rama
+
+```bash
+git push origin nombre-rama
+```
+
+Ejemplo:
+
+```bash
+git push origin melissa-maquetacion
+```
+
+---
+
+# ❌ NUNCA HACER ESTO
+
+```bash
+git push origin main
+```
+
+A menos que el líder del proyecto lo autorice.
+
+---
+
+# 🔍 Cómo revisar cambios antes de unirlos
+
+## Ver diferencias de archivos
+
+```bash
+git diff
+```
+
+Muestra exactamente qué cambió.
+
+---
+
+# 🔍 Revisar historial de commits
+
+```bash
+git log --oneline
+```
+
+Sirve para ver:
+
+* quién hizo cambios
+* qué cambios hizo
+* historial del proyecto
+
+---
+
+# 🔍 Ver ramas existentes
+
+```bash
+git branch
+```
+
+---
+
+# 🔍 Ver ramas remotas
+
+```bash
+git branch -r
+```
+
+---
+
+# 🔍 Descargar ramas nuevas del equipo
+
+```bash
+git fetch
+```
+
+Esto NO modifica archivos.
+Solo actualiza información del repositorio.
+
+---
+
+# 🔍 Revisar cambios de otro integrante antes de unirlos
+
+## Cambiar a su rama
+
+```bash
+git checkout nombre-rama
+```
+
+Ejemplo:
+
+```bash
+git checkout melissa-maquetacion
+```
+
+---
+
+## Ver qué hizo
+
+```bash
+git status
+```
+
+```bash
+git log --oneline
+```
+
+```bash
+git diff main
+```
+
+---
+
+# ✅ Cómo unir cambios correctamente
+
+## Volver a main
+
+```bash
+git checkout main
+```
+
+---
+
+## Actualizar main
+
+```bash
+git pull origin main
+```
+
+---
+
+## Unir rama
+
+```bash
+git merge nombre-rama
+```
+
+Ejemplo:
+
+```bash
+git merge melissa-maquetacion
+```
+
+---
+
+# ⚠️ Si hay conflictos
+
+NO borrar archivos.
+
+NO usar:
+
+```bash
+git push --force
+```
+
+Avisar al líder del proyecto primero.
+
+---
+
+# 🚫 Archivos que NO se deben subir
+
+Nunca subir:
+
+* `.env`
+* `vendor`
+* `node_modules`
+* contraseñas
+* archivos pesados
+* configuraciones personales
+
+---
+
+# 📌 Comandos más importantes
+
+## Revisar estado
+
+```bash
+git status
+```
+
+---
+
+## Descargar cambios
+
+```bash
+git pull origin main
+```
+
+---
+
+## Ver historial
+
+```bash
+git log --oneline
+```
+
+---
+
+## Crear rama
+
+```bash
+git checkout -b nombre-rama
+```
+
+---
+
+## Cambiar de rama
+
+```bash
+git checkout nombre-rama
+```
+
+---
+
+## Agregar cambios
+
+```bash
+git add .
+```
+
+---
+
+## Guardar cambios
+
+```bash
+git commit -m "mensaje"
+```
+
+---
+
+## Subir rama
+
+```bash
+git push origin nombre-rama
+```
+
+---
+
+# 👥 Regla del equipo
+
+Antes de unir cualquier rama:
+
+1. Revisar cambios
+2. Probar el proyecto
+3. Verificar que no rompa funcionalidades
+4. Confirmar con el equipo
