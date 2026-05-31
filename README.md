@@ -1,14 +1,23 @@
-# 🔧 Reglas de Git - Kraneo Cafe
+# ☕ Kraneo Cafe
 
-## ⚠️ REGLA MÁS IMPORTANTE
+Proyecto desarrollado en Laravel para la administración de cafetería y gestión de productos.
 
-Nunca trabajar directamente sobre la rama:
+---
 
-```bash
-main
-```
+# 👥 Integrantes del equipo
 
-La rama `main` contiene el proyecto estable y original.
+* Delia
+* Jonathan
+* (Agregar integrantes)
+---
+
+# ⚠️ Reglas importantes del proyecto
+
+## ❌ NO trabajar directamente sobre `main`
+
+La rama `main` contiene la versión estable y original del proyecto.
+
+Todos los integrantes deben trabajar en ramas separadas.
 
 ---
 
@@ -16,9 +25,7 @@ La rama `main` contiene el proyecto estable y original.
 
 ## 1. Actualizar el proyecto antes de empezar
 
-Siempre hacer esto primero:
-
-```bash
+```bash id="jfe1m4"
 git checkout main
 git pull origin main
 ```
@@ -27,31 +34,29 @@ Esto descarga los cambios más recientes del equipo.
 
 ---
 
-# ✅ Crear una rama personal
+## 2. Crear una rama personal
 
 Cada integrante debe crear su propia rama.
 
 Ejemplos:
 
-```bash
-git checkout -b melissa-maquetacion
+```bash id="jwrj8g"
+git checkout -b jonathan-maquetacion
 ```
 
-```bash
+```bash id="9f0k59"
 git checkout -b login-usuarios
 ```
 
-```bash
+```bash id="rjlwm1"
 git checkout -b crud-productos
 ```
 
 ---
 
-# ✅ Revisar en qué rama estás
+## 3. Revisar en qué rama estás
 
-Antes de trabajar:
-
-```bash
+```bash id="wdvltb"
 git branch
 ```
 
@@ -59,20 +64,20 @@ La rama actual aparece con `*`
 
 Ejemplo:
 
-```bash
-* melissa-maquetacion
+```bash id="crf0wu"
+* jonathan-maquetacion
 main
 ```
 
 ---
 
-# ✅ Revisar qué archivos modificaste
+## 4. Revisar archivos modificados
 
-```bash
+```bash id="4s5eyf"
 git status
 ```
 
-Esto sirve para:
+Sirve para:
 
 * ver archivos modificados
 * ver archivos nuevos
@@ -80,51 +85,49 @@ Esto sirve para:
 
 ---
 
-# ✅ Guardar cambios correctamente
+## 5. Guardar cambios
 
-## Agregar archivos
+### Agregar archivos
 
-```bash
+```bash id="3e5mn4"
 git add .
 ```
 
----
+### Crear commit
 
-## Crear commit
-
-```bash
+```bash id="bjlwm6"
 git commit -m "Descripción clara del cambio"
 ```
 
 Ejemplos:
 
-```bash
+```bash id="vjl72f"
 git commit -m "Se agrega login de usuarios"
 ```
 
-```bash
+```bash id="4a5wcf"
 git commit -m "Se corrige navbar del dashboard"
 ```
 
 ---
 
-# ✅ Subir SOLO tu rama
+## 6. Subir SOLO tu rama
 
-```bash
+```bash id="ynhl7r"
 git push origin nombre-rama
 ```
 
 Ejemplo:
 
-```bash
-git push origin melissa-maquetacion
+```bash id="6h4pj8"
+git push origin jonathan-maquetacion
 ```
 
 ---
 
 # ❌ NUNCA HACER ESTO
 
-```bash
+```bash id="a2zj9m"
 git push origin main
 ```
 
@@ -132,51 +135,43 @@ A menos que el líder del proyecto lo autorice.
 
 ---
 
-# 🔍 Cómo revisar cambios antes de unirlos
+# 🔍 Cómo revisar cambios antes de unir ramas
 
 ## Ver diferencias de archivos
 
-```bash
+```bash id="v3fj82"
 git diff
 ```
 
-Muestra exactamente qué cambió.
-
 ---
 
-# 🔍 Revisar historial de commits
+## Ver historial de commits
 
-```bash
+```bash id="ep2x7g"
 git log --oneline
 ```
 
-Sirve para ver:
-
-* quién hizo cambios
-* qué cambios hizo
-* historial del proyecto
-
 ---
 
-# 🔍 Ver ramas existentes
+## Ver ramas existentes
 
-```bash
+```bash id="bg4nyv"
 git branch
 ```
 
 ---
 
-# 🔍 Ver ramas remotas
+## Ver ramas remotas
 
-```bash
+```bash id="y0mj8m"
 git branch -r
 ```
 
 ---
 
-# 🔍 Descargar ramas nuevas del equipo
+## Descargar información nueva del repositorio
 
-```bash
+```bash id="5m1fj3"
 git fetch
 ```
 
@@ -185,33 +180,33 @@ Solo actualiza información del repositorio.
 
 ---
 
-# 🔍 Revisar cambios de otro integrante antes de unirlos
+# 🔍 Revisar cambios de otro integrante
 
-## Cambiar a su rama
+## Cambiar a la rama del compañero
 
-```bash
+```bash id="h4s8ew"
 git checkout nombre-rama
 ```
 
 Ejemplo:
 
-```bash
-git checkout melissa-maquetacion
+```bash id="xq9v0l"
+git checkout jonathan-maquetacion
 ```
 
 ---
 
-## Ver qué hizo
+## Revisar sus cambios
 
-```bash
+```bash id="5b9jmd"
 git status
 ```
 
-```bash
+```bash id="2xg4qf"
 git log --oneline
 ```
 
-```bash
+```bash id="grj0q9"
 git diff main
 ```
 
@@ -221,7 +216,7 @@ git diff main
 
 ## Volver a main
 
-```bash
+```bash id="tr8x6m"
 git checkout main
 ```
 
@@ -229,7 +224,7 @@ git checkout main
 
 ## Actualizar main
 
-```bash
+```bash id="7yq0kb"
 git pull origin main
 ```
 
@@ -237,14 +232,14 @@ git pull origin main
 
 ## Unir rama
 
-```bash
+```bash id="z7q4pd"
 git merge nombre-rama
 ```
 
 Ejemplo:
 
-```bash
-git merge melissa-maquetacion
+```bash id="1l0c8e"
+git merge jonathan-maquetacion
 ```
 
 ---
@@ -255,7 +250,7 @@ NO borrar archivos.
 
 NO usar:
 
-```bash
+```bash id="4r3vzc"
 git push --force
 ```
 
@@ -276,11 +271,47 @@ Nunca subir:
 
 ---
 
+# ▶️ Cómo ejecutar el proyecto
+
+## Instalar dependencias
+
+```bash id="brm5tw"
+composer install
+npm install
+```
+
+---
+
+## Configurar entorno
+
+```bash id="m1t7ys"
+cp .env.example .env
+php artisan key:generate
+```
+
+---
+
+## Ejecutar migraciones
+
+```bash id="mjlwm9"
+php artisan migrate
+```
+
+---
+
+## Iniciar servidor
+
+```bash id="c9j4vf"
+php artisan serve
+```
+
+---
+
 # 📌 Comandos más importantes
 
 ## Revisar estado
 
-```bash
+```bash id="x8s5fe"
 git status
 ```
 
@@ -288,7 +319,7 @@ git status
 
 ## Descargar cambios
 
-```bash
+```bash id="d8m1pl"
 git pull origin main
 ```
 
@@ -296,7 +327,7 @@ git pull origin main
 
 ## Ver historial
 
-```bash
+```bash id="4ew2fg"
 git log --oneline
 ```
 
@@ -304,7 +335,7 @@ git log --oneline
 
 ## Crear rama
 
-```bash
+```bash id="w6j2rn"
 git checkout -b nombre-rama
 ```
 
@@ -312,7 +343,7 @@ git checkout -b nombre-rama
 
 ## Cambiar de rama
 
-```bash
+```bash id="f4j0xv"
 git checkout nombre-rama
 ```
 
@@ -320,7 +351,7 @@ git checkout nombre-rama
 
 ## Agregar cambios
 
-```bash
+```bash id="7d1qmx"
 git add .
 ```
 
@@ -328,7 +359,7 @@ git add .
 
 ## Guardar cambios
 
-```bash
+```bash id="0y7nfg"
 git commit -m "mensaje"
 ```
 
@@ -336,13 +367,13 @@ git commit -m "mensaje"
 
 ## Subir rama
 
-```bash
+```bash id="4a1rkw"
 git push origin nombre-rama
 ```
 
 ---
 
-# 👥 Regla del equipo
+# 👥 Regla final del equipo
 
 Antes de unir cualquier rama:
 
