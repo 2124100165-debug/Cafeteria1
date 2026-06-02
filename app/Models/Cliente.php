@@ -2,15 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Cliente extends Model {
-    use HasFactory, SoftDeletes;
-    protected $table = 'cliente';
+class Cliente extends Model
+{
+    use HasFactory;
+
+    protected $table = 'clientes';
+
     protected $primaryKey = 'id_cliente';
-    protected $fillable = ['nombre', 'email', 'telefono', 'direccion'];
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
-    public function pedidos() { return $this->hasMany(Pedido::class, 'id_cliente', 'id_cliente'); }
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'nombres',
+        'apellidos',
+        'email',
+        'password',
+        'telefono',
+        'direccion',
+        'imagen',
+        'estado'
+    ];
+
+    protected $hidden = [
+        'password'
+    ];
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class, 'id_cliente');
+    }
 }

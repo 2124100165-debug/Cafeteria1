@@ -2,14 +2,39 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Proveedor extends Model {
-    use HasFactory, SoftDeletes;
-    protected $table = 'proveedor';
-    protected $primaryKey = 'id_proveedor';
-    protected $fillable = ['nombre_empresa', 'contacto', 'telefono'];
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+class Proveedor extends Model
+{
+    use HasFactory;
+
+    protected $table = 'proveedores';
+
+    protected $primaryKey = 'id_provider';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'nombre_empresa',
+        'contacto_nombre',
+        'telefono',
+        'direccion',
+        'rfc'
+    ];
+
+    protected $casts = [
+        'id_provider' => 'integer'
+    ];
+
+   
+
+    public function productos()
+    {
+        return $this->hasMany(
+            Producto::class,
+            'id_provider',
+            'id_provider'
+        );
+    }
 }

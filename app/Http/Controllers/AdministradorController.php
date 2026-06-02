@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Administrador; // Importa su modelo
+use App\Models\Administrador;
 use Illuminate\Http\Request;
 
 class AdministradorController extends Controller
 {
     public function listado()
     {
-        $administradores = [
-            (object) ['id_admin' => 1, 'imagen_url' => '', 'nombres' => 'Carlos', 'apellidos' => 'Mendoza', 'usuario' => 'cmendoza', 'email' => 'carlos@kraneocafe.com', 'rol' => 'Administrador', 'estado' => 'Activo'],
-            (object) ['id_admin' => 2, 'imagen_url' => '', 'nombres' => 'Ana', 'apellidos' => 'García', 'usuario' => 'agarcia', 'email' => 'ana@kraneocafe.com', 'rol' => 'Barista', 'estado' => 'Inactivo'],
-        ];
+        // ⚡ ELOQUENT: Trae todos los administradores reales
+        $administradores = Administrador::all();
 
         return view('administrador.list-admin', compact('administradores'));
     }

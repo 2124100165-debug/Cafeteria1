@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Producto;
+use App\Models\Producto; // Importación crucial del modelo Eloquent
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
     public function listado()
     {
-        $productos = [
-            (object) ['id_producto' => 1, 'nombre' => 'Capuccino', 'categoria' => 'Bebidas Calientes', 'precio' => 45.00, 'stock' => 50],
-            (object) ['id_producto' => 2, 'nombre' => 'Frappé Moka', 'categoria' => 'Bebidas Frías', 'precio' => 65.50, 'stock' => 10],
-        ];
+        // ⚡ ELOQUENT: Va a la base de datos y trae todos los registros de la tabla 'productos'
+        $productos = Producto::all();
 
         return view('productos.list-prod', compact('productos'));
     }
