@@ -2,27 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Administrador extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $table = 'administradores'; 
+    protected $table = 'administradores';
 
-    // Regla: Llave primaria personalizada
-    protected $primaryKey = 'id_administrador';
+    protected $primaryKey = 'id_admin';
 
-    // Regla: Asignación masiva
-    protected $fillable = ['nombre', 'email', 'password', 'rol'];
+    public $timestamps = false;
 
-    // Regla: Ocultar datos sensibles (¡Muy importante para administradores!)
-    protected $hidden = ['password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = [
+        'nombres',
+        'apellidos',
+        'rol',
+        'usuario',
+        'email',
+        'password',
+        'imagen_url',
+        'estado'
+    ];
 
-    // Regla: Casts (si tuvieras fechas especiales o JSON)
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+    protected $hidden = [
+        'password'
     ];
 }

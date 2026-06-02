@@ -2,16 +2,45 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Producto extends Model {
-    use HasFactory, SoftDeletes;
+class Producto extends Model
+{
+    use HasFactory;
+
     protected $table = 'productos';
+
     protected $primaryKey = 'id_producto';
-    protected $fillable = ['nombre_producto', 'id_categoria', 'estado'];
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
-    public function categoria() { return $this->belongsTo(Categoria::class, 'id_categoria', 'id_categoria'); }
-    public function presentaciones() { return $this->hasMany(ProductoPresentacion::class, 'id_producto', 'id_producto'); }
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'nombre_producto',
+        'descripcion',
+        'precio',
+        'stock',
+        'id_provider'
+    ];
+
+    protected $casts = [
+        'id_producto' => 'integer',
+        'id_provider' => 'integer',
+        'precio' => 'decimal:2'
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELACIÓN CON PROVEEDORES
+    |--------------------------------------------------------------------------
+    */
+
+    public function proveedor()
+    {
+        return $this->belongsTo(
+            Proveedor::class,
+            'id_provider',
+            'id_provider'
+        );
+    }
 }
