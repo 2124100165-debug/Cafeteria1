@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body p-4">
                     
-                    <form action="{{ route('producto.index') }}" method="GET">
+                    <form action="{{ route('producto.guardar') }}" method="POST">
 
                         <div class="mb-3">
                             <label for="nombre" class="form-label text-dorado-kraneo fw-bold">Nombre del Producto</label>

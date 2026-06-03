@@ -16,11 +16,11 @@ class Producto extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'nombre_producto',
+        'id_categoria',
+        'nombre',
         'descripcion',
-        'precio',
-        'stock',
-        'id_provider'
+        'imagen',
+        'estado',
     ];
 
     protected $casts = [

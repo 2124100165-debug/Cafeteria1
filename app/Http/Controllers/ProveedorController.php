@@ -19,4 +19,18 @@ class ProveedorController extends Controller
     {
         return view('proveedores.form-prov');
     }
+
+     public function guardar(Request $request)
+    {
+        $proveedor = new Proveedor();
+        $proveedor->nombre_empresa = $request->input('nombre_empresa');
+        $proveedor->contacto_nombre = $request->input('contacto_nombre');
+        $proveedor->telefono = $request->input('telefono');
+        $proveedor->direccion = $request->input('direccion');
+        $proveedor->rfc = $request->input('rfc');
+        $proveedor->save();
+
+        return redirect()->route('proveedor.index')->with('success', 'Proveedor creado exitosamente.');
+    }
+
 }

@@ -10,7 +10,7 @@
                 <h4 class="mb-0">Registrar Nuevo Proveedor</h4>
             </div>
             <div class="card-body">
-                <form action="#" method="POST">
+                <form action="{{ route('proveedor.guardar') }}" method="POST">
                     @csrf
 
                     <div class="mb-3">

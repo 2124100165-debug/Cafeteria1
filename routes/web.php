@@ -33,6 +33,7 @@ Route::get('/clientes/crear', [ClienteController::class, 'formulario'])->name('c
 // 3. Proveedores (Busca: proveedor.crear / proveedor.index)
 Route::get('/proveedores', [ProveedorController::class, 'listado'])->name('proveedor.index');
 Route::get('/proveedores/crear', [ProveedorController::class, 'formulario'])->name('proveedor.crear');
+Route::post('/proveedores/guardar', [ProveedorController::class, 'guardar'])->name('proveedor.guardar');
 
 // 4. Categorías (Busca: categoria.crear / categoria.index)
 Route::get('/categorias', [CategoriaController::class, 'listado'])->name('categoria.index');
@@ -41,10 +42,13 @@ Route::get('/categorias/crear', [CategoriaController::class, 'formulario'])->nam
 // 5. Productos (Busca: producto.crear / producto.index)
 Route::get('/productos', [ProductoController::class, 'listado'])->name('producto.index');
 Route::get('/productos/crear', [ProductoController::class, 'formulario'])->name('producto.crear');
+Route::post('/productos/guardar', [ProductoController::class, 'guardar'])->name('producto.guardar');
+
 
 // 6. Pedido (Busca: pedido.crear / pedido.index)
 Route::get('/pedidos', [PedidoController::class, 'listado'])->name('pedido.index');
 Route::get('/pedidos/crear', [PedidoController::class, 'formulario'])->name('pedido.crear');
+Route::post('/pedidos/guardar', [PedidoController::class, 'guardar'])->name('pedido.guardar');
 
 // 7. Pagos (Busca: pagos.crear / pagos.index)
 Route::get('/pagos', [PagoController::class, 'listado'])->name('pagos.index');

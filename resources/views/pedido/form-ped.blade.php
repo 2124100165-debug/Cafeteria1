@@ -7,7 +7,7 @@
     <h2>Registrar Nuevo Pedido</h2>
     <hr>
     {{-- La action quedará lista para tu ruta de guardado --}}
-    <form action="#" method="POST">
+    <form action="{{ route('pedido.guardar') }}" method="POST">
         @csrf
         <div class="row">
             <div class="col-md-4 mb-3">

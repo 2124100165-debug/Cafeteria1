@@ -10,9 +10,16 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+    ->withMiddleware(function (Middleware $middleware) {
+        
+        // 🌟 AGREGA ESTA LÍNEA AQUÍ PARA EVITAR EL ERROR 419 EN POSTMAN:
+        $middleware->validateCsrfTokens(except: [
+            'productos/guardar',
+            'pedidos/guardar',
+            'proveedores/guardar'
+        ]);
+
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
