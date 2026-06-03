@@ -21,12 +21,12 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="categoria" class="form-label text-dorado-kraneo fw-bold">Categoría</label>
-                                <select class="form-select bg-dark text-white border-secondary" id="categoria" name="categoria" required>
-                                    <option value="Bebidas Calientes">Bebidas Calientes</option>
-                                    <option value="Bebidas Frías">Bebidas Frías</option>
-                                    <option value="Especialidades">Especialidades</option>
-                                    <option value="Repostería">Repostería</option>
+                                <label for="id_categoria" class="form-label text-dorado-kraneo fw-bold">Categoría</label>
+                                <select class="form-select bg-dark text-white border-secondary" id="id_categoria" name="id_categoria" required>
+                                    <option value="1">Bebidas Calientes</option>
+                                    <option value="2">Bebidas Frías</option>
+                                    <option value="3">Especialidades</option>
+                                    <option value="4">Repostería</option>
                                 </select>
                             </div>
 
