@@ -11,11 +11,14 @@
                 <p class="text-muted small mb-0">Secciones activas del menú en la base de datos</p>
             </div>
             <div>
-                <a href="{{ route('categoria.crear') }}" class="btn btn-warning fw-bold btn-sm">
+                {{-- 🛠️ CORREGIDO: Se agregó la 's' para cambiar 'categoria.crear' por 'categorias.crear' --}}
+                <a href="{{ route('categorias.crear') }}" class="btn btn-warning fw-bold btn-sm">
                     <i class="bi bi-plus-lg"></i> Nueva Categoría
                 </a>
             </div>
         </div>
+
+        {{-- El resto de tu tabla hacia abajo se queda exactamente igual --}}
 
         {{-- Mensajes de Notificación de la Base de Datos --}}
         @if(session('status'))
