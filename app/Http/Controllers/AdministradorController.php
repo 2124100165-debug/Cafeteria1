@@ -9,7 +9,7 @@ class AdministradorController extends Controller
 {
     public function listado()
     {
-        // ⚡ ELOQUENT: Trae todos los administradores reales
+        //ELOQUENT: Trae todos los administradores reales
         $administradores = Administrador::all();
 
         return view('administrador.list-admin', compact('administradores'));
@@ -20,7 +20,7 @@ class AdministradorController extends Controller
         return view('administrador.form-admin');
     }
 
-    // 🚀 AGREGAMOS LA FUNCIÓN QUE FALTA:
+    // AGREGAMOS LA FUNCIÓN QUE FALTA:
     public function guardar(Request $request)
     {
         // A. Validar la doble confirmación del correo electrónico
@@ -62,4 +62,6 @@ class AdministradorController extends Controller
         // F. Redireccionar al listado de administradores
         return redirect()->route('administrador.index')->with('success', '¡Personal registrado con éxito!');
     }
+// para editar los datos del formulario de administradores
+        Public function editar(Request $request)
 }

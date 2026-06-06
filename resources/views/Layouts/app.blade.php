@@ -27,13 +27,13 @@
                     
                     {{-- Dropdowns para cada tabla --}}
                     @php
-                        // 🛠️ CORREGIDO: Se cambiaron los nombres a plural ('categorias') 
+                        //  CORREGIDO: Se cambiaron los nombres a plural ('categorias') 
                         // para que coincidan exactamente con tus alias de Route::get/post en web.php
                         $menus = [
                             'Administrador'  => 'administrador',
                             'Cliente'        => 'cliente',
                             'Proveedores'    => 'proveedor',
-                            'Categorías'     => 'categorias', // 👈 Cambiado de 'categoria' a 'categorias'
+                            'Categorías'     => 'categorias', //  Cambiado de 'categoria' a 'categorias'
                             'Productos'      => 'producto',
                             'Pedido'         => 'pedido',
                             'Pagos'          => 'pagos',
