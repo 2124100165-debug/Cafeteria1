@@ -23,7 +23,7 @@
                         </div>
                     @endif
                     
-                    {{-- 🛠️ CRÍTICO: enctype="multipart/form-data" para permitir la subida de archivos JPG/PNG --}}
+                    {{-- CRÍTICO: enctype="multipart/form-data" para permitir la subida de archivos JPG/PNG --}}
                     <form action="{{ route('administrador.guardar') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         
@@ -39,7 +39,7 @@
                             </div>
                         </div>
 
-                        {{-- 🛡️ DOBLE CONFIRMACIÓN DE CORREO --}}
+                        {{--  DOBLE CONFIRMACIÓN DE CORREO --}}
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label text-dorado-kraneo fw-bold">Correo Electrónico</label>
@@ -76,7 +76,7 @@
                             </div>
                         </div>
 
-                        {{-- 📸 CARGA DUAL DE FOTOGRAFÍA --}}
+                        {{--  CARGA DUAL DE FOTOGRAFÍA --}}
                         <div class="card bg-dark border-secondary p-3 mb-3">
                             <h5 class="text-dorado-kraneo mb-3"><i class="bi bi-image"></i> Fotografía del Personal</h5>
                             <div class="row">
