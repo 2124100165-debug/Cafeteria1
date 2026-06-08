@@ -12,24 +12,7 @@
         </a>
     </div>
 
-    {{-- Buscador en Tiempo Real --}}
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <div class="input-group">
-                <span class="input-group-text bg-black text-dorado-kraneo border-dorado-kraneo">
-                    <i class="bi bi-search"></i>
-                </span>
-                <input 
-                    type="text" 
-                    id="buscarCliente" 
-                    class="form-control bg-dark text-white border-dorado-kraneo shadow-none" 
-                    placeholder="Buscar por nombre, apellido o email..."
-                >
-            </div>
-        </div>
-    </div>
-
-    {{-- Tabla Responsiva de Bootstrap con estilo Kraneo --}}
+    {{-- Tabla Responsiva de Bootstrap --}}
     <div class="table-responsive shadow-lg rounded border border-dorado-kraneo">
         <table class="table table-dark table-striped table-hover align-middle mb-0">
             <thead class="table-black border-bottom border-dorado-kraneo">
@@ -40,20 +23,17 @@
                     <th scope="col" class="py-3">Apellidos</th>
                     <th scope="col" class="py-3">Email</th>
                     <th scope="col" class="py-3">Teléfono</th>
-                    <th scope="col" class="py-3">Dirección</th>
+                    <th scope="col" class="py-3">Estado</th> {{-- Nueva columna --}}
                     <th scope="col" class="py-3 text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($clientes as $cliente)
                     <tr>
-                        {{-- ID: id_cliente --}}
                         <td class="text-dorado-kraneo fw-bold">#{{ $cliente->id_cliente }}</td>
-                        
-                        {{-- Foto: imagen --}}
                         <td>
                             <img 
-                                src="{{ $cliente->imagen ?? asset('imagen/default-user.png') }}" 
+                                src="{{ $cliente->imagen ? asset($cliente->imagen) : asset('imagen/default-user.png') }}" 
                                 alt="Cliente" 
                                 class="rounded-circle border border-secondary shadow"
                                 width="45" 
@@ -65,10 +45,21 @@
                         <td>{{ $cliente->apellidos }}</td>
                         <td class="text-white-50">{{ $cliente->email }}</td>
                         <td class="text-warning">{{ $cliente->telefono ?? '-' }}</td>
-                        <td class="small text-white-50">{{ $cliente->direccion ?? '-' }}</td>
+                        
+                        {{-- Visualización del Estado --}}
+                        <td>
+                            @if($cliente->estado === 'Activo')
+                                <span class="badge bg-success text-black">Activo</span>
+                            @else
+                                <span class="badge bg-danger text-white">Inactivo</span>
+                            @endif
+                        </td>
+
                         <td class="text-center">
                             <div class="btn-group" role="group">
-                                <a href="#" class="btn btn-sm btn-outline-warning">Editar</a>
+                                <a href="{{ route('cliente.edit', $cliente->id_cliente) }}" class="btn btn-sm btn-outline-warning">
+                                    Editar
+                                </a>
                                 <button type="button" class="btn btn-sm btn-outline-danger">Eliminar</button>
                             </div>
                         </td>
@@ -84,7 +75,4 @@
         </table>
     </div>
 </div>
-
-{{-- Enlace limpio al archivo de JavaScript externo en la carpeta pública --}}
-<script src="{{ asset('js/buscador.js') }}"></script>
 @endsection

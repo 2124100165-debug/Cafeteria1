@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// =========================================================================
 // 1. IMPORTACIÓN EXPLÍCITA DE CONTROLADORES
 // =========================================================================
 use App\Http\Controllers\AdministradorController;
@@ -18,43 +17,34 @@ use App\Http\Controllers\ProveedorController;
 // Vista de inicio base (Cascarón principal)
 Route::view('/', 'inicio')->name('inicio');
 
-// =========================================================================
 // 2. REGISTRO DE RUTAS MEDIANTE CONTROLADORES ACOPLADOS A TU MENÚ DINÁMICO
 // =========================================================================
-                                                                             // Listado de administradores (GET)
-Route::get('/administrador', [AdministradorController::class, 'listado'])->name('administrador.index');
+Route::get('/administrador', [AdministradorController::class, 'listado'])->name('administrador.index');// Listado de administradores (GET)
+Route::get('/administrador/crear', [AdministradorController::class, 'formulario'])->name('administrador.crear');// Formulario para crear (GET)
+Route::post('/administrador/guardar', [AdministradorController::class, 'guardar'])->name('administrador.guardar'); // ACCIÓN DE GUARDAR (Debe ser POST obligatoriamente)
+Route::get('/administrador/editar/{id}', [AdministradorController::class, 'editar'])->name('administrador.editar'); // Formulario para editar (GET)
+Route::post('/administrador/actualizar/{id}', [AdministradorController::class, 'actualizar'])->name('administrador.actualizar'); // ACCIÓN DE ACTUALIZAR (Debe ser POST obligatoriamente)
 
-// Formulario para crear (GET)
-Route::get('/administrador/crear', [AdministradorController::class, 'formulario'])->name('administrador.crear');
-
-// ACCIÓN DE GUARDAR (Debe ser POST obligatoriamente)
-Route::post('/administrador/guardar', [AdministradorController::class, 'guardar'])->name('administrador.guardar');
-
-
-// Módulo de Clientes (Se usa 'cliente' en singular para coincidir con tu app.blade.php)
-Route::get('/clientes', [ClienteController::class, 'listado'])->name('cliente.index');
-Route::get('/clientes/crear', [ClienteController::class, 'formulario'])->name('cliente.crear');
-Route::post('/clientes/guardar', [ClienteController::class, 'guardar'])->name('cliente.guardar');
+Route::get('/clientes', [ClienteController::class, 'listado'])->name('cliente.index');// Listado de clientes (GET)
+Route::get('/clientes/crear', [ClienteController::class, 'formulario'])->name('cliente.crear'); // Formulario para crear (GET)
+Route::post('/clientes/guardar', [ClienteController::class, 'guardar'])->name('cliente.guardar'); // ACCIÓN DE GUARDAR (Debe ser POST obligatoriamente)
+Route::get('/clientes/{id}/editar', [ClienteController::class, 'editar'])->name('cliente.edit'); // Formulario para editar (GET)
+Route::post('/clientes/actualizar/{id}', [ClienteController::class, 'actualizar'])->name('cliente.actualizar'); // ACCIÓN DE ACTUALIZAR (Debe ser POST obligatoriamente)
 
 // 3. Proveedores (Busca: proveedor.crear / proveedor.index)
 Route::get('/proveedores', [ProveedorController::class, 'listado'])->name('proveedor.index');
 Route::get('/proveedores/crear', [ProveedorController::class, 'formulario'])->name('proveedor.crear');
 Route::post('/proveedores/guardar', [ProveedorController::class, 'guardar'])->name('proveedor.guardar');
 
-
-
 // =========================================================================
-// MÓDULO DE CATEGORÍAS (VERIFICACIÓN FINAL)
+// MÓDULO DE CATEGORÍAS
 // =========================================================================
+Route::get('/categorias', [CategoriaController::class, 'listado'])->name('categorias.index'); // 1. Debe llamarse 'categorias.index' para que funcione el listado y el botón "Ver Listado"
+Route::get('/categorias/crear', [CategoriaController::class, 'formulario'])->name('categorias.crear'); // 2. Debe llamarse 'categorias.crear' para alimentar la barra de navegación dinámica sin errores
+Route::post('/categorias/guardar', [CategoriaController::class, 'guardar'])->name('categorias.guardar'); // 3. Debe llamarse 'categorias.guardar' para que coincida con el action de tu formulario POST
+Route::get('/categorias/editar/{id}', [CategoriaController::class, 'editar'])->name('categorias.editar'); // 4. Ruta para editar categorías (GET)
+Route::post('/categorias/actualizar/{id}', [CategoriaController::class, 'actualizar'])->name('categorias.actualizar'); // 5. Ruta para actualizar categorías (POST)
 
-// 1. Debe llamarse 'categorias.index' para que funcione el listado y el botón "Ver Listado"
-Route::get('/categorias', [CategoriaController::class, 'listado'])->name('categorias.index');
-
-// 2. Debe llamarse 'categorias.crear' para alimentar la barra de navegación dinámica sin errores
-Route::get('/categorias/crear', [CategoriaController::class, 'formulario'])->name('categorias.crear');
-
-// 3. Debe llamarse 'categorias.guardar' para que coincida con el action de tu formulario POST
-Route::post('/categorias/guardar', [CategoriaController::class, 'guardar'])->name('categorias.guardar');
 
 // 5. Productos (Busca: producto.crear / producto.index)
 Route::get('/productos', [ProductoController::class, 'listado'])->name('producto.index');
