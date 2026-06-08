@@ -21,13 +21,13 @@ Route::view('/', 'inicio')->name('inicio');
 // =========================================================================
 // 2. REGISTRO DE RUTAS MEDIANTE CONTROLADORES ACOPLADOS A TU MENÚ DINÁMICO
 // =========================================================================
-// Listado de administradores (GET)
+                                                                             // Listado de administradores (GET)
 Route::get('/administrador', [AdministradorController::class, 'listado'])->name('administrador.index');
 
 // Formulario para crear (GET)
 Route::get('/administrador/crear', [AdministradorController::class, 'formulario'])->name('administrador.crear');
 
-// 🛠️ ACCIÓN DE GUARDAR (Debe ser POST obligatoriamente)
+// ACCIÓN DE GUARDAR (Debe ser POST obligatoriamente)
 Route::post('/administrador/guardar', [AdministradorController::class, 'guardar'])->name('administrador.guardar');
 
 
