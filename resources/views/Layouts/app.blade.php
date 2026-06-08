@@ -48,6 +48,7 @@
                         <ul class="dropdown-menu kraneo-dropdown">
                             {{-- Buscará correctamente 'categorias.crear' y 'categorias.index' --}}
                             <li><a class="dropdown-item kraneo-dropdown-item" href="{{ route($route.'.crear') }}">Nuevo / Registro</a></li>
+                            <li><
                             <li><a class="dropdown-item kraneo-dropdown-item" href="{{ route($route.'.index') }}">Ver Listado</a></li>
                         </ul>
                     </li>

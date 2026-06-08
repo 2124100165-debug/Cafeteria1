@@ -3,30 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Administrador extends Model
 {
-    use HasFactory;
-
+    // Indicar explícitamente el nombre de la tabla
     protected $table = 'administradores';
 
+    // Indicar explícitamente la clave primaria
     protected $primaryKey = 'id_admin';
 
-    public $timestamps = false;
+    // Desactivar timestamps si no tienes campos 'created_at' y 'updated_at' en tu tabla
+    public $timestamps = false; 
 
-    protected $fillable = [
-        'nombres',
-        'apellidos',
-        'rol',
-        'usuario',
-        'email',
-        'password',
-        'imagen_url',
-        'estado'
-    ];
-
-    protected $hidden = [
-        'password'
-    ];
+    // Campos que pueden ser asignados masivamente
+    protected $fillable = ['nombres', 'apellidos', 'rol', 'usuario', 'email', 'password', 'imagen_url', 'estado'];
 }
