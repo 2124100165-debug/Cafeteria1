@@ -12,7 +12,14 @@
         </a>
     </div>
 
-    {{-- Tabla Responsiva de Bootstrap --}}
+    {{-- Mensajes de Notificación --}}
+    @if(session('success'))
+        <div class="alert alert-success bg-success text-white border-0 mb-4" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- Tabla Responsiva --}}
     <div class="table-responsive shadow-lg rounded border border-dorado-kraneo">
         <table class="table table-dark table-striped table-hover align-middle mb-0">
             <thead class="table-black border-bottom border-dorado-kraneo">
@@ -32,50 +39,52 @@
                 @forelse($administradores as $admin)
                     <tr>
                         <td class="text-dorado-kraneo fw-bold">#{{ $admin->id_admin }}</td>
-                        
                         <td>
-                            <img 
-                                src="{{ $admin->imagen_url ?? asset('imagen/default-user.png') }}" 
-                                alt="Perfil" 
-                                class="rounded-circle border border-secondary shadow"
-                                width="45" 
-                                height="45"
-                                style="object-fit: cover;"
-                            >
+                            <img src="{{ $admin->imagen_url ?? asset('imagen/default-user.png') }}" 
+                                 alt="Perfil" class="rounded-circle border border-secondary shadow"
+                                 width="45" height="45" style="object-fit: cover;">
                         </td>
                         <td class="fw-bold">{{ $admin->nombres }}</td>
                         <td>{{ $admin->apellidos }}</td>
                         <td class="text-warning">{{ $admin->usuario }}</td>
                         <td class="text-white-50">{{ $admin->email }}</td>
-                        
                         <td>
                             <span class="badge bg-secondary text-uppercase fs-7">
                                 {{ $admin->rol }}
                             </span>
                         </td>
-                        
                         <td>
-                            @if($admin->estado == 'Activo')
-                                <span class="badge bg-success">Activo</span>
-                            @else
-                                <span class="badge bg-danger">Inactivo</span>
-                            @endif
+                            <span class="badge {{ $admin->estado == 'Activo' ? 'bg-success' : 'bg-danger' }}">
+                                {{ $admin->estado }}
+                            </span>
                         </td>
-                        
-                        {{-- Botones de Acción optimizados --}}
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2">
-                                <a href="{{ route('administrador.editar', $admin->id_admin) }}" class="btn btn-sm btn-warning text-black fw-bold px-3">
+                                {{-- Botón Editar --}}
+                                <a href="{{ route('administrador.editar', $admin->id_admin) }}" class="btn btn-sm btn-warning text-black fw-bold">
                                     <i class="bi bi-pencil-square"></i> Editar
                                 </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger">Eliminar</button>
+
+                                {{-- Botón Ver --}}
+                                <a href="{{ route('administrador.mostrar', $admin->id_admin) }}" class="btn btn-sm btn-info text-black fw-bold">
+                                    <i class="bi bi-eye"></i> Ver
+                                </a>
+
+                                {{-- Formulario Eliminar (Soft Delete) --}}
+                                <form action="{{ route('administrador.eliminarLog', $admin->id_admin) }}" method="POST" 
+                                      onsubmit="return confirm('¿Estás seguro de enviar a este administrador a la papelera?');">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger fw-bold">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
                 @empty
                     <tr>
                         <td colspan="9" class="text-center py-5 text-muted">
-                            <p class="mb-0 fs-5">No hay personal registrado en la base de datos.</p>
+                            <p class="mb-0 fs-5">No hay personal activo registrado.</p>
                         </td>
                     </tr>
                 @endforelse

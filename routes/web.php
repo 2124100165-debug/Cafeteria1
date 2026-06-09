@@ -14,58 +14,67 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoPresentacionController;
 use App\Http\Controllers\ProveedorController;
 
-// Vista de inicio base (Cascarón principal)
+// Vista de inicio base
 Route::view('/', 'inicio')->name('inicio');
 
-// 2. REGISTRO DE RUTAS MEDIANTE CONTROLADORES ACOPLADOS A TU MENÚ DINÁMICO
+// 2. REGISTRO DE RUTAS MEDIANTE CONTROLADORES
 // =========================================================================
-Route::get('/administrador', [AdministradorController::class, 'listado'])->name('administrador.index');// Listado de administradores (GET)
-Route::get('/administrador/crear', [AdministradorController::class, 'formulario'])->name('administrador.crear');// Formulario para crear (GET)
-Route::post('/administrador/guardar', [AdministradorController::class, 'guardar'])->name('administrador.guardar'); // ACCIÓN DE GUARDAR (Debe ser POST obligatoriamente)
-Route::get('/administrador/editar/{id}', [AdministradorController::class, 'editar'])->name('administrador.editar'); // Formulario para editar (GET)
-Route::post('/administrador/actualizar/{id}', [AdministradorController::class, 'actualizar'])->name('administrador.actualizar'); // ACCIÓN DE ACTUALIZAR (Debe ser POST obligatoriamente)
 
-Route::get('/clientes', [ClienteController::class, 'listado'])->name('cliente.index');// Listado de clientes (GET)
-Route::get('/clientes/crear', [ClienteController::class, 'formulario'])->name('cliente.crear'); // Formulario para crear (GET)
-Route::post('/clientes/guardar', [ClienteController::class, 'guardar'])->name('cliente.guardar'); // ACCIÓN DE GUARDAR (Debe ser POST obligatoriamente)
-Route::get('/clientes/{id}/editar', [ClienteController::class, 'editar'])->name('cliente.edit'); // Formulario para editar (GET)
-Route::post('/clientes/actualizar/{id}', [ClienteController::class, 'actualizar'])->name('cliente.actualizar'); // ACCIÓN DE ACTUALIZAR (Debe ser POST obligatoriamente)
+// 2.1 Módulo Administradores
+Route::get('/administrador', [AdministradorController::class, 'listado'])->name('administrador.index');
+Route::get('/administrador/crear', [AdministradorController::class, 'formulario'])->name('administrador.crear');
+Route::post('/administrador/guardar', [AdministradorController::class, 'guardar'])->name('administrador.guardar');
+Route::get('/administrador/editar/{id}', [AdministradorController::class, 'editar'])->name('administrador.editar');
+Route::post('/administrador/actualizar/{id}', [AdministradorController::class, 'actualizar'])->name('administrador.actualizar');
+Route::post('/administrador/eliminarLog/{id}', [AdministradorController::class, 'eliminarLog'])->name('administrador.eliminarLog');
+Route::get('/administrador/mostrar/{id}', [AdministradorController::class, 'mostrar'])->name('administrador.mostrar');
 
-// 3. Proveedores (Busca: proveedor.crear / proveedor.index)
+// 2.2 Módulo Clientes
+Route::get('/clientes', [ClienteController::class, 'listado'])->name('cliente.index');
+Route::get('/clientes/crear', [ClienteController::class, 'formulario'])->name('cliente.crear');
+Route::post('/clientes/guardar', [ClienteController::class, 'guardar'])->name('cliente.guardar');
+Route::get('/clientes/{id}/editar', [ClienteController::class, 'editar'])->name('cliente.edit');
+Route::post('/clientes/actualizar/{id}', [ClienteController::class, 'actualizar'])->name('cliente.actualizar');
+Route::get('/clientes/mostrar/{id}', [ClienteController::class, 'mostrar'])->name('cliente.mostrar');
+Route::post('/clientes/eliminarLog/{id}', [ClienteController::class, 'eliminarLog'])->name('cliente.eliminarLog');
+
+// 2.3 Módulo Proveedores
 Route::get('/proveedores', [ProveedorController::class, 'listado'])->name('proveedor.index');
 Route::get('/proveedores/crear', [ProveedorController::class, 'formulario'])->name('proveedor.crear');
 Route::post('/proveedores/guardar', [ProveedorController::class, 'guardar'])->name('proveedor.guardar');
+Route::get('/proveedores/mostrar/{id}', [ProveedorController::class, 'mostrar'])->name('proveedor.mostrar');
+Route::post('/proveedores/eliminar/{id}', [ProveedorController::class, 'eliminar'])->name('proveedor.eliminar');
 
-// =========================================================================
-// MÓDULO DE CATEGORÍAS
-// =========================================================================
-Route::get('/categorias', [CategoriaController::class, 'listado'])->name('categorias.index'); // 1. Debe llamarse 'categorias.index' para que funcione el listado y el botón "Ver Listado"
-Route::get('/categorias/crear', [CategoriaController::class, 'formulario'])->name('categorias.crear'); // 2. Debe llamarse 'categorias.crear' para alimentar la barra de navegación dinámica sin errores
-Route::post('/categorias/guardar', [CategoriaController::class, 'guardar'])->name('categorias.guardar'); // 3. Debe llamarse 'categorias.guardar' para que coincida con el action de tu formulario POST
-Route::get('/categorias/editar/{id}', [CategoriaController::class, 'editar'])->name('categorias.editar'); // 4. Ruta para editar categorías (GET)
-Route::post('/categorias/actualizar/{id}', [CategoriaController::class, 'actualizar'])->name('categorias.actualizar'); // 5. Ruta para actualizar categorías (POST)
+// 2.4 Módulo Categorías (Mantiene tu lógica de eliminarLog)
+Route::get('/categorias', [CategoriaController::class, 'listado'])->name('categorias.index');
+Route::get('/categorias/crear', [CategoriaController::class, 'formulario'])->name('categorias.crear');
+Route::post('/categorias/guardar', [CategoriaController::class, 'guardar'])->name('categorias.guardar');
+Route::get('/categorias/editar/{id}', [CategoriaController::class, 'editar'])->name('categorias.editar');
+Route::post('/categorias/actualizar/{id}', [CategoriaController::class, 'actualizar'])->name('categorias.actualizar');
+Route::post('/categorias/eliminarLog/{id}', [CategoriaController::class, 'eliminarLog'])->name('categorias.eliminarLog');
+Route::get('/categorias/mostrar/{id}', [CategoriaController::class, 'mostrar'])->name('categorias.mostrar');
 
-
-// 5. Productos (Busca: producto.crear / producto.index)
+// 2.5 Módulo Productos
 Route::get('/productos', [ProductoController::class, 'listado'])->name('producto.index');
 Route::get('/productos/crear', [ProductoController::class, 'formulario'])->name('producto.crear');
 Route::post('/productos/guardar', [ProductoController::class, 'guardar'])->name('producto.guardar');
+Route::get('/productos/mostrar/{id}', [ProductoController::class, 'mostrar'])->name('producto.mostrar');
+Route::post('/productos/eliminar/{id}', [ProductoController::class, 'eliminar'])->name('producto.eliminar');
 
-
-// 6. Pedido (Busca: pedido.crear / pedido.index)
+// 2.6 Módulo Pedidos
 Route::get('/pedidos', [PedidoController::class, 'listado'])->name('pedido.index');
 Route::get('/pedidos/crear', [PedidoController::class, 'formulario'])->name('pedido.crear');
 Route::post('/pedidos/guardar', [PedidoController::class, 'guardar'])->name('pedido.guardar');
+Route::get('/pedidos/mostrar/{id}', [PedidoController::class, 'mostrar'])->name('pedido.mostrar');
+Route::post('/pedidos/eliminar/{id}', [PedidoController::class, 'eliminar'])->name('pedido.eliminar');
 
-// 7. Pagos (Busca: pagos.crear / pagos.index)
+// 3. OTROS MÓDULOS (Sin cambios)
 Route::get('/pagos', [PagoController::class, 'listado'])->name('pagos.index');
 Route::get('/pagos/crear', [PagoController::class, 'formulario'])->name('pagos.crear');
 Route::post('/pagos/guardar', [PagoController::class, 'guardar'])->name('pagos.guardar');
 
-// 8. Detalles (Busca: detalle_pedidos.crear / detalle_pedidos.index)
 Route::get('/detalles-pedidos', [DetallePedidoController::class, 'listado'])->name('detalle_pedidos.index');
 Route::get('/detalles-pedidos/crear', [DetallePedidoController::class, 'formulario'])->name('detalle_pedidos.crear');
 
-// 9. Presentaciones (Busca: producto_presentaciones.crear / producto_presentaciones.index)
 Route::get('/presentaciones-productos', [ProductoPresentacionController::class, 'listado'])->name('producto_presentaciones.index');
 Route::get('/presentaciones-productos/crear', [ProductoPresentacionController::class, 'formulario'])->name('producto_presentaciones.crear');

@@ -116,4 +116,30 @@ class ClienteController extends Controller
 
         return redirect()->route('cliente.index')->with('status', '¡Cliente actualizado con éxito!');
     }
+
+    public function mostrar($id)
+    {
+        $cliente = Cliente::find($id);
+        if (!$cliente) {
+            return redirect()->route('cliente.index')->with('error', 'Cliente no encontrado.');
+        }
+        return view('cliente.Ver-cliente', compact('cliente'));
+    }
+
+    // Lógica de Borrado Lógico (Soft Delete)
+    public function eliminarLog($id)
+    {
+        $cliente = Cliente::find($id);
+
+        if (!$cliente) {
+            return redirect()->route('clientes.index')->with('error', 'Cliente no encontrado.');
+        }
+
+        // Cambiamos el estado en lugar de borrar físicamente
+        $cliente->estado = 'Inactivo';
+        $cliente->save();
+
+        return redirect()->route('cliente.index')->with('success', 'Cliente desactivado correctamente.');
+    }
 }
+

@@ -4,27 +4,28 @@
 
 @section('contenido')
 <div class="container mt-4">
-    {{-- Encabezado del Listado --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-dorado-kraneo mb-0">Clientes / Lista General</h2>
+        <h2 class="text-dorado-kraneo mb-0 fw-bold">Clientes / Lista General</h2>
         <a href="{{ route('cliente.crear') }}" class="btn btn-warning fw-bold text-black">
             + Nuevo Cliente
         </a>
     </div>
 
-    {{-- Tabla Responsiva de Bootstrap --}}
+    @if(session('success'))
+        <div class="alert alert-success border-0 shadow-sm">{{ session('success') }}</div>
+    @endif
+
     <div class="table-responsive shadow-lg rounded border border-dorado-kraneo">
         <table class="table table-dark table-striped table-hover align-middle mb-0">
             <thead class="table-black border-bottom border-dorado-kraneo">
                 <tr class="text-dorado-kraneo">
-                    <th scope="col" class="py-3">ID</th>
-                    <th scope="col" class="py-3">Foto</th>
-                    <th scope="col" class="py-3">Nombres</th>
-                    <th scope="col" class="py-3">Apellidos</th>
-                    <th scope="col" class="py-3">Email</th>
-                    <th scope="col" class="py-3">Teléfono</th>
-                    <th scope="col" class="py-3">Estado</th> {{-- Nueva columna --}}
-                    <th scope="col" class="py-3 text-center">Acciones</th>
+                    <th>ID</th>
+                    <th>Foto</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Email</th>
+                    <th>Estado</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,43 +33,37 @@
                     <tr>
                         <td class="text-dorado-kraneo fw-bold">#{{ $cliente->id_cliente }}</td>
                         <td>
-                            <img 
-                                src="{{ $cliente->imagen ? asset($cliente->imagen) : asset('imagen/default-user.png') }}" 
-                                alt="Cliente" 
-                                class="rounded-circle border border-secondary shadow"
-                                width="45" 
-                                height="45"
-                                style="object-fit: cover;"
-                            >
+                            <img src="{{ $cliente->imagen ? asset($cliente->imagen) : asset('imagen/default-user.png') }}" 
+                                 class="rounded-circle border border-secondary" width="45" height="45" style="object-fit: cover;">
                         </td>
-                        <td class="fw-bold">{{ $cliente->nombres }}</td>
+                        <td>{{ $cliente->nombres }}</td>
                         <td>{{ $cliente->apellidos }}</td>
                         <td class="text-white-50">{{ $cliente->email }}</td>
-                        <td class="text-warning">{{ $cliente->telefono ?? '-' }}</td>
-                        
-                        {{-- Visualización del Estado --}}
                         <td>
-                            @if($cliente->estado === 'Activo')
-                                <span class="badge bg-success text-black">Activo</span>
-                            @else
-                                <span class="badge bg-danger text-white">Inactivo</span>
-                            @endif
+                            <span class="badge {{ $cliente->estado === 'Activo' ? 'bg-success' : 'bg-danger' }}">
+                                {{ $cliente->estado }}
+                            </span>
                         </td>
-
-                        <td class="text-center">
-                            <div class="btn-group" role="group">
-                                <a href="{{ route('cliente.edit', $cliente->id_cliente) }}" class="btn btn-sm btn-outline-warning">
-                                    Editar
-                                </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                {{-- Botón Ver --}}
+                                <a href="{{ route('cliente.mostrar', $cliente->id_cliente) }}" class="btn btn-sm btn-info btn-uniforme">Ver</a>
+                                
+                                {{-- Botón Editar --}}
+                                <a href="{{ route('cliente.edit', $cliente->id_cliente) }}" class="btn btn-sm btn-outline-warning btn-uniforme">Editar</a>
+                                
+                                {{-- Formulario Borrado Lógico --}}
+                                <form action="{{ route('cliente.eliminarLog', $cliente->id_cliente) }}" method="POST"
+                                      onsubmit="return confirm('¿Desactivar a este cliente?');">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-danger btn-uniforme">Eliminar</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="text-center py-5 text-muted">
-                            <p class="mb-0 fs-5">No hay clientes registrados en la base de datos.</p>
-                        </td>
+                        <td colspan="7" class="text-center py-4 text-muted">No hay registros.</td>
                     </tr>
                 @endforelse
             </tbody>

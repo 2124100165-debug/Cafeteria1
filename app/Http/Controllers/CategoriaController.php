@@ -33,7 +33,6 @@ class CategoriaController extends Controller
         $categoria->descripcion      = $request->input('descripcion');
         $categoria->estado           = $request->input('estado');
 
-        // Procesamiento: prioridad al archivo, si no, se guarda la URL
         if ($request->hasFile('foto_archivo')) {
             $file = $request->file('foto_archivo');
             $nombreImagen = time() . '_' . $file->getClientOriginalName();
@@ -77,7 +76,6 @@ class CategoriaController extends Controller
         $categoria->descripcion      = $request->input('descripcion');
         $categoria->estado           = $request->input('estado');
 
-        // Solo actualizamos la imagen si el usuario proporciona una nueva vía archivo o URL
         if ($request->hasFile('foto_archivo')) {
             $file = $request->file('foto_archivo');
             $nombreImagen = time() . '_' . $file->getClientOriginalName();
@@ -90,5 +88,38 @@ class CategoriaController extends Controller
         $categoria->save();
 
         return redirect()->route('categorias.index')->with('success', 'Categoría actualizada con éxito.');
+    }
+     
+    /**
+     * Método para mostrar detalles (GET)
+     */
+    public function mostrar($id)
+    {
+        $categoria = Categoria::find($id);
+        
+        if (!$categoria) {
+            return redirect()->route('categorias.index')->with('error', 'Categoría no encontrada.');
+        }
+
+        return view('categorias.Ver-cat', compact('categoria'));
+    }
+
+    /**
+     * Método para eliminar (Renombrado a 'eliminar' para coincidir con tu ruta)
+     */
+    public function eliminarLog($id)
+    {
+        $categoria = Categoria::find($id);
+        
+        if (!$categoria) {
+            return redirect()->route('categorias.index')->with('error', 'Categoría no encontrada.');
+        }
+
+        // LÍNEA 118: ESTO ES EL BORRADO LÓGICO
+
+        $categoria->estado = 'Inactivo';
+        $categoria->save();
+
+        return redirect()->route('categorias.index')->with('success', 'Categoría eliminada con éxito.');
     }
 }
