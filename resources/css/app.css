@@ -93,19 +93,6 @@ h2, h3, h4, .text-primary {
     margin-bottom: 0;
 }
 
-/* Elementos del Carrusel */
-.carousel-img {
-    height: 500px;
-    object-fit: cover;
-    filter: brightness(85%);
-}
-.carousel-caption-dark {
-    background: rgba(18, 18, 18, 0.85);
-    border: 1px solid #ffcc00;
-    border-radius: 8px;
-    padding: 20px;
-}
-
 /* Footer */
 .kraneo-footer {
     background-color: #0a0a0a;
@@ -114,13 +101,8 @@ h2, h3, h4, .text-primary {
     padding: 25px 0;
     margin-top: auto;
 }
-.kraneo-footer-text {
-    margin: 0;
-    font-size: 0.85rem;
-    color: #666666;
-}
 
-/* Nueva clase para truncar nombres de archivos en tablas */
+/* Estilos de Tablas y Formularios */
 .file-path-truncate {
     max-width: 150px; 
     white-space: nowrap;
@@ -132,12 +114,77 @@ h2, h3, h4, .text-primary {
     background-color: #333 !important;
     border: 1px solid #444;
 }
-.file-path-truncate:hover {
-    background-color: #444 !important;
-    border-color: #ffcc00;
+
+.form-control:focus {
+    border-color: #ffcc00 !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 204, 0, 0.25) !important;
 }
 
-/* Color Dorado Kraneo Café */
+.card {
+    background-color: #1a1a1a !important;
+}
+
+/* Botones */
+.custom-btn {
+    min-width: 75px;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+.custom-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Estilos para el Expediente de Categoría (CORREGIDOS) */
+.categoria-foto {
+    max-height: 150px;
+    object-fit: cover;
+    width: 100%;
+    border: 2px solid #ffcc00;
+    border-radius: 8px;
+}
+
+.categoria-desc {
+    min-height: 80px;
+    word-wrap: break-word;
+}
+
+.card-body label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #ffcc00;
+}
+/* Botones de acción unificados */
+.btn-uniforme {
+    min-width: 85px; /* Tamaño mínimo constante */
+    padding: 5px 10px;
+    font-size: 0.8rem; /* Tamaño de letra adecuado */
+    transition: all 0.3s ease;
+}
+
+.btn-uniforme:hover {
+    transform: scale(1.03); /* Un toque de movimiento suave */
+    opacity: 0.95;
+}
+
+/* --- Modulo Clientes / Acciones --- */
+.btn-uniforme {
+    min-width: 80px;
+    padding: 5px 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-uniforme:hover {
+    transform: scale(1.05);
+}
+
 .text-dorado-kraneo {
     color: #ffcc00 !important;
 }
@@ -146,13 +193,52 @@ h2, h3, h4, .text-primary {
     border-color: #ffcc00 !important;
 }
 
-/* Mejora para los inputs del formulario */
-.form-control:focus {
-    border-color: #ffcc00 !important;
-    box-shadow: 0 0 0 0.25rem rgba(255, 204, 0, 0.25) !important;
+/* =====================================
+   PANEL DE GEOLOCALIZACIÓN Y APIs
+===================================== */
+
+.info-api {
+    color: #ffffff;
 }
 
-/* Ajuste de tarjetas oscuras */
-.card {
-    background-color: #1a1a1a !important;
+.info-api h5 {
+    color: #ffcc00 !important;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.info-api p {
+    color: #ffffff;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.info-api strong {
+    color: #ffcc00;
+}
+
+.info-api span {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.info-api .bi {
+    color: #ffcc00;
+}
+
+.api-card {
+    background-color: #5e5d5d !important;
+    border: 2px solid #ffcc00;
+    border-radius: 10px;
+}
+
+.api-header {
+    background-color: #ffcc00;
+    color: #121212;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.api-header .bi {
+    color: #121212;
 }
