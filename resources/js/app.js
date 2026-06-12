@@ -11,19 +11,21 @@ fetch('https://ipapi.co/json/')
     .then(response => response.json())
     .then(data => {
 
+        // Ubicación
         const ciudad = document.getElementById('ciudad');
         const estado = document.getElementById('estado');
         const pais = document.getElementById('pais');
 
-        if (ciudad) ciudad.innerText = data.city;
-        if (estado) estado.innerText = data.region;
-        if (pais) pais.innerText = data.country_name;
+        if (ciudad) ciudad.innerText = data.city || 'N/A';
+        if (estado) estado.innerText = data.region || 'N/A';
+        if (pais) pais.innerText = data.country_name || 'N/A';
 
+        // Llamar clima con coordenadas reales
         obtenerClima(data.latitude, data.longitude);
 
     })
     .catch(error => {
-        console.error('Error de geolocalización:', error);
+        console.error('Error en geolocalización:', error);
     });
 
 /*
@@ -36,55 +38,74 @@ function obtenerClima(lat, lon) {
 
     const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
+    if (!lat || !lon) {
+        console.error('Coordenadas no disponibles');
+        return;
+    }
+
+    // CLIMA ACTUAL
     fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=4befe011c90d79ba63e37ab6934e5553&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
     )
     .then(response => response.json())
     .then(data => {
-
-        console.log('CLIMA:', data);
 
         const temp = document.getElementById('temp');
         const humedad = document.getElementById('humedad');
         const lluvia = document.getElementById('lluvia');
 
-        if (temp) temp.innerText = data.main.temp;
-        if (humedad) humedad.innerText = data.main.humidity;
+        if (temp) temp.innerText = `${data.main.temp} °C`;
+        if (humedad) humedad.innerText = `${data.main.humidity} %`;
 
+        // lluvia (si existe)
         if (lluvia) {
-            lluvia.innerText = data.rain
-                ? Object.values(data.rain)[0]
-                : 0;
+            lluvia.innerText = data.rain?.["1h"]
+                ? `${data.rain["1h"]} mm`
+                : '0 mm';
         }
 
     })
     .catch(error => {
         console.error('Error del clima:', error);
     });
+
+    // PROBABILIDAD DE LLUVIA (FORECAST)
+    fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+    )
+    .then(response => response.json())
+    .then(data => {
+
+        const lluviaProb = document.getElementById('lluviaProb');
+
+        if (lluviaProb && data.list && data.list.length > 0) {
+            const prob = (data.list[0].pop || 0) * 100;
+            lluviaProb.innerText = `${prob.toFixed(0)} %`;
+        }
+
+    })
+    .catch(error => {
+        console.error('Error probabilidad lluvia:', error);
+    });
 }
 
 /*
 =====================================
-API 3 - TIPO DE CAMBIO
+API 3 - TIPO DE CAMBIO de moneddas (EXCHANGERATE-API)
 =====================================
 */
 
-fetch(
-    `https://v6.exchangerate-api.com/v6/0b24c258710bf792ea7bc799/latest/USD`
-)
-.then(response => response.json())
-.then(data => {
+fetch('https://open.er-api.com/v6/latest/USD')
+    .then(response => response.json())
+    .then(data => {
 
-    console.log('MONEDA:', data);
+        const tipoCambio = document.getElementById('tipoCambio');
 
-    const tipoCambio = document.getElementById('tipoCambio');
+        if (tipoCambio && data.rates?.MXN) {
+            tipoCambio.innerText = `${data.rates.MXN} MXN`;
+        }
 
-    if (tipoCambio) {
-        tipoCambio.innerText =
-            data.conversion_rates.MXN;
-    }
-
-})
-.catch(error => {
-    console.error('Error en tipo de cambio:', error);
-});
+    })
+    .catch(error => {
+        console.error('Error tipo de cambio:', error);
+    });
