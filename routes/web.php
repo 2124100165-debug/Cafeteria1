@@ -16,7 +16,8 @@ use App\Http\Controllers\ProveedorController;
 
 // Vista de inicio base
 Route::view('/', 'inicio')->name('inicio');
-
+// Ruta para API de tipo de cambio;
+Route::get('/api/datos', [ApiController::class, 'datos'])->name('api.datos');
 // 2. REGISTRO DE RUTAS MEDIANTE CONTROLADORES
 // =========================================================================
 

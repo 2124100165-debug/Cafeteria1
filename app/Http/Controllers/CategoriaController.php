@@ -7,16 +7,20 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-    public function listado()
-    {
-        $categorias = Categoria::all();
-        return view('categorias.list-cat', compact('categorias'));
-    }
+    
+    
+public function listado(Request $request)
+{
+    $buscar = $request->input('buscar');
+    
+    $categorias = Categoria::when($buscar, function ($query) use ($buscar) {
+        $query->where('nombre_categoria', 'LIKE', "%{$buscar}%")
+              ->orWhere('descripcion', 'LIKE', "%{$buscar}%");
+    })->get();
 
-    public function formulario()
-    {
-        return view('categorias.form-cat');
-    }
+    // Asegúrate de que el nombre aquí coincida con la carpeta y el archivo
+    return view('categorias.list-cat', compact('categorias'));
+}
 
     public function guardar(Request $request)
     {

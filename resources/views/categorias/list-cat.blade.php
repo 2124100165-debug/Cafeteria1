@@ -15,6 +15,18 @@
             </a>
         </div>
 
+        {{-- Buscador --}}
+        <div class="mb-4">
+            <form action="{{ route('categorias.index') }}" method="GET" class="d-flex gap-2">
+                <input type="text" name="buscar" class="form-control bg-dark text-white border-secondary" 
+                       placeholder="Buscar categoría por nombre o descripción..." value="{{ request('buscar') }}">
+                <button type="submit" class="btn btn-outline-warning">Buscar</button>
+                @if(request('buscar'))
+                    <a href="{{ route('categorias.index') }}" class="btn btn-outline-secondary">Limpiar</a>
+                @endif
+            </form>
+        </div>
+
         {{-- Mensajes de Notificación --}}
         @if(session('success'))
             <div class="alert alert-success border-0 shadow-sm" role="alert">

@@ -192,3 +192,53 @@ h2, h3, h4, .text-primary {
 .border-dorado-kraneo {
     border-color: #ffcc00 !important;
 }
+
+/* =====================================
+   PANEL DE GEOLOCALIZACIÓN Y APIs
+===================================== */
+
+.info-api {
+    color: #ffffff;
+}
+
+.info-api h5 {
+    color: #ffcc00 !important;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.info-api p {
+    color: #ffffff;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.info-api strong {
+    color: #ffcc00;
+}
+
+.info-api span {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.info-api .bi {
+    color: #ffcc00;
+}
+
+.api-card {
+    background-color: #5e5d5d !important;
+    border: 2px solid #ffcc00;
+    border-radius: 10px;
+}
+
+.api-header {
+    background-color: #ffcc00;
+    color: #121212;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.api-header .bi {
+    color: #121212;
+}

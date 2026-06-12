@@ -22,28 +22,38 @@
     <div class="row mb-3">
         <div class="col-md-4">
 
-            <div class="input-group">
+            <form method="GET">
 
-                <span class="input-group-text
-                             bg-black
-                             text-dorado-kraneo
-                             border-dorado-kraneo">
+                <div class="input-group">
 
-                    <i class="bi bi-search"></i>
+                    <span class="input-group-text
+                                 bg-black
+                                 text-dorado-kraneo
+                                 border-dorado-kraneo">
 
-                </span>
+                        <i class="bi bi-search"></i>
 
-                <input type="text"
-                       id="buscarProveedor"
-                       class="form-control
-                              bg-dark
-                              text-white
-                              border-dorado-kraneo
-                              shadow-none"
+                    </span>
 
-                       placeholder="Buscar por nombre, empresa...">
+                    <input type="text"
+                           id="buscarProveedor"
+                           name="buscar"
+                           class="form-control
+                                  bg-dark
+                                  text-white
+                                  border-dorado-kraneo
+                                  shadow-none"
+                           placeholder="Buscar por nombre, empresa..."
+                           value="{{ request('buscar') }}">
 
-            </div>
+                    <button type="submit"
+                            class="btn btn-warning fw-bold text-black">
+                        Buscar
+                    </button>
+
+                </div>
+
+            </form>
 
         </div>
     </div>
@@ -150,6 +160,5 @@
 
 </div>
 
-<script src="{{ asset('js/buscador.js') }}"></script>
 
 @endsection

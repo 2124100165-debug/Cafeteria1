@@ -12,6 +12,18 @@
         </a>
     </div>
 
+    {{-- Buscador --}}
+    <div class="mb-4">
+        <form action="{{ route('administrador.index') }}" method="GET" class="d-flex gap-2">
+            <input type="text" name="buscar" class="form-control bg-dark text-white border-secondary" 
+                   placeholder="Buscar por nombre, usuario o email..." value="{{ request('buscar') }}">
+            <button type="submit" class="btn btn-outline-warning">Buscar</button>
+            @if(request('buscar'))
+                <a href="{{ route('administrador.index') }}" class="btn btn-outline-secondary">Limpiar</a>
+            @endif
+        </form>
+    </div>
+
     {{-- Mensajes de Notificación --}}
     @if(session('success'))
         <div class="alert alert-success bg-success text-white border-0 mb-4" role="alert">

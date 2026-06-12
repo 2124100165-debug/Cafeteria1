@@ -119,26 +119,4 @@ class AdministradorController extends Controller
 
         return redirect()->route('administrador.index')->with('status', '¡Empleado actualizado correctamente!');
     }
-    // Muestra los detalles de un administrador específico
-    public function mostrar($id_admin)
-    {
-        $administrador = Administrador::find($id_admin);
-        if (!$administrador) {
-            return redirect()->route('administrador.index')->with('error', 'Administrador no encontrado.');
-        }
-        return view('administrador.Ver-admin', compact('administrador'));
-    }
-
-    // Eliminar un administrador
-    public function eliminarlog($id_admin
-    ) {
-        $administrador = Administrador::find($id_admin);
-        if (!$administrador) {
-            return redirect()->route('administrador.index')->with('error', 'Administrador no encontrado.');
-        }
-        $administrador->estado = 'Inactivo';
-        $administrador->save();
-
-        return redirect()->route('administrador.index')->with('success', '¡Administrador eliminado correctamente!');
-    }
 }
