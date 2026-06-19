@@ -15,10 +15,10 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-md-4 text-center">
-                            {{-- Ajustado: Verificamos que la imagen exista en la BD --}}
-                            <img src="{{ $cliente->imagen ? asset($cliente->imagen) : asset('imagen/default-user.png') }}" 
+                            {{-- CORREGIDO: Se elimina asset() para pintar la URL absoluta directa generada por el controlador --}}
+                            <img src="{{ $cliente->imagen ? $cliente->imagen : url('storage/imagenes/clientes/producto_default.jpg') }}" 
                                  class="img-fluid rounded-circle border border-dorado-kraneo shadow"
-                                 style="width: 150px; height: 150px; object-fit: cover;">
+                                 style="width: 150px; height: 150px; object-fit: cover;" alt="Foto de Perfil">
                         </div>
                         
                         <div class="col-md-8">
@@ -26,7 +26,6 @@
                             <p class="text-white-50"><i class="bi bi-envelope"></i> {{ $cliente->email }}</p>
                             
                             <div class="d-flex flex-wrap gap-2 mt-3">
-                                {{-- Aquí aseguramos que llame a las columnas correctas de tu tabla --}}
                                 <span class="badge bg-secondary p-2 fs-6">
                                     Tel: {{ $cliente->telefono ?? 'Sin número' }}
                                 </span>

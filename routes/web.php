@@ -28,7 +28,8 @@ Route::post('/administrador/guardar', [AdministradorController::class, 'guardar'
 Route::get('/administrador/editar/{id}', [AdministradorController::class, 'editar'])->name('administrador.editar');
 Route::post('/administrador/actualizar/{id}', [AdministradorController::class, 'actualizar'])->name('administrador.actualizar');
 Route::post('/administrador/eliminarLog/{id}', [AdministradorController::class, 'eliminarLog'])->name('administrador.eliminarLog');
-Route::get('/administrador/mostrar/{id}', [AdministradorController::class, 'mostrar'])->name('administrador.mostrar');
+Route::get('/administrador/mostrar/{id}', [AdministradorController::class, 'ver'])->name('administrador.mostrar');
+Route::post('/administrador/storage-link', function () {Artisan::call('storage:link'); return 'Enlace simbólico creado exitosamente.';})->name('administrador.storage-link'); // Ruta para crear el enlace simbólico de almacenamiento (si es necesario)
 
 // 2.2 Módulo Clientes
 Route::get('/clientes', [ClienteController::class, 'listado'])->name('cliente.index');
@@ -36,8 +37,9 @@ Route::get('/clientes/crear', [ClienteController::class, 'formulario'])->name('c
 Route::post('/clientes/guardar', [ClienteController::class, 'guardar'])->name('cliente.guardar');
 Route::get('/clientes/{id}/editar', [ClienteController::class, 'editar'])->name('cliente.edit');
 Route::post('/clientes/actualizar/{id}', [ClienteController::class, 'actualizar'])->name('cliente.actualizar');
-Route::get('/clientes/mostrar/{id}', [ClienteController::class, 'mostrar'])->name('cliente.mostrar');
+Route::get('/clientes/mostrar/{id}', [ClienteController::class, 'ver'])->name('cliente.mostrar');
 Route::post('/clientes/eliminarLog/{id}', [ClienteController::class, 'eliminarLog'])->name('cliente.eliminarLog');
+Route::post('/clientes/storage-link', function () {Artisan::call('storage:link'); return 'Enlace simbólico creado exitosamente.';})->name('cliente.storage-link'); // Ruta para crear el enlace simbólico de almacenamiento (si es necesario)
 
 // 2.3 Módulo Proveedores
 Route::get('/proveedores', [ProveedorController::class, 'listado'])->name('proveedor.index');
