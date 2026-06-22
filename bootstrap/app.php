@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         
+        // Redirigir usuarios no autenticados al login
+        $middleware->redirectTo(guests: '/login');
+        
         // 🌟 AGREGA ESTA LÍNEA AQUÍ PARA EVITAR EL ERROR 419 EN POSTMAN:
         $middleware->validateCsrfTokens(except: [
             'productos/guardar',

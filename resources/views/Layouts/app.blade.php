@@ -99,6 +99,35 @@
 
                     @endforeach
 
+                    @if(Auth::guard('admin')->check())
+                        <li class="nav-item">
+                            <a class="nav-link kraneo-link text-warning fw-bold" href="/dashboard">
+                                <i class="bi bi-speedometer2"></i> Panel
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle kraneo-link" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i> {{ Auth::guard('admin')->user()->nombres }}
+                            </a>
+                            <ul class="dropdown-menu kraneo-dropdown">
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST" class="m-0">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item kraneo-dropdown-item text-danger fw-bold">
+                                            <i class="bi bi-box-arrow-right"></i> Salir
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link kraneo-link fw-bold" style="color: #d4af37;" href="/login">
+                                <i class="bi bi-box-arrow-in-right"></i> Acceder
+                            </a>
+                        </li>
+                    @endif
+
                 </ul>
 
             </div>
