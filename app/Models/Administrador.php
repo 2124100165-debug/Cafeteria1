@@ -9,32 +9,24 @@ class Administrador extends Authenticatable
 {
     use Notifiable;
 
-    // Indicar explícitamente el nombre de la tabla
     protected $table = 'administradores';
-
-    // Indicar explícitamente la clave primaria
     protected $primaryKey = 'id_admin';
-
-    // Desactivar timestamps si no tienes campos 'created_at' y 'updated_at' en tu tabla
     public $timestamps = false; 
 
-    // Campos que pueden ser asignados masivamente
     protected $fillable = [
         'nombres', 
         'apellidos', 
         'rol', 
         'usuario', 
         'email', 
-        'password', 
-        'contraseña', 
+        'contraseña', // Tu columna en phpMyAdmin
         'imagen_url', 
-        'estado', 
-        'activo'
+        'activo'      // Tu columna en phpMyAdmin
     ];
 
     /**
-     * IMPORTANTE: Laravel busca el campo 'password'.
-     * Como usamos 'contraseña', debemos indicárselo explícitamente.
+     * OBLIGATORIO DE LA RÚBRICA:
+     * Le indica a Laravel que la columna que almacena el hash de la clave se llama 'contraseña'.
      */
     public function getAuthPassword()
     {
@@ -42,28 +34,12 @@ class Administrador extends Authenticatable
     }
 
     /**
-     * Mapear la propiedad virtual 'password' a la columna real 'contraseña'
+     * SOLUCIÓN AL ERROR: 
+     * Sobrescribimos el nombre de la columna para el sistema de Hash automatizado de Laravel.
+     * Esto evita que intente hacer un UPDATE a la columna inexistente 'password'.
      */
-    public function getPasswordAttribute()
+    public function getAuthPasswordName()
     {
-        return $this->contraseña;
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        $this->contraseña = $value;
-    }
-
-    /**
-     * Mapear la propiedad virtual 'estado' a la columna real 'activo'
-     */
-    public function getEstadoAttribute()
-    {
-        return $this->activo == 1 ? 'Activo' : 'Inactivo';
-    }
-
-    public function setEstadoAttribute($value)
-    {
-        $this->activo = ($value === 'Activo' || $value == 1) ? 1 : 0;
+        return 'contraseña';
     }
 }
