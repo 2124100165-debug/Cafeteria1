@@ -18,7 +18,7 @@ class SocialController extends Controller
     }
 
     /**
-     * Maneja el retorno (callback) del proveedor de autenticación.
+     * Maneja el retorno (callback) del proveedor de autenticación de Google.
      */
     public function callback()
     {
@@ -26,12 +26,12 @@ class SocialController extends Controller
             $userSocial = Socialite::driver('google')->user();
 
             // 1. Buscar si el correo de la red social existe en la tabla de administradores
-            // Nota: Se busca en el campo 'email', o en 'email_google' si agregaste esa columna.
             $admin = Administrador::where('email', $userSocial->getEmail())->first();
 
             if ($admin) {
-                // 2. Verificar si el administrador está activo (1 = Activo)
-                if ($admin->activo == 1) {
+                // 2. Verificar el estado utilizando de forma directa la columna 'activo' (1 = Activo)
+                if ((int)$admin->activo === 1) {
+                    
                     // 3. LOGUEAR MANUALMENTE EN EL GUARD 'admin'
                     Auth::guard('admin')->login($admin);
                    

@@ -28,7 +28,7 @@ Route::get('/api/datos', [ApiController::class, 'datos'])->name('api.datos');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-// Rutas de Socialite (Acceso con Google) - Requieren configurar config/services.php y composer require laravel/socialite
+// Rutas de Socialite (Acceso con Google)
 Route::get('/auth/google', [SocialController::class, 'redirect'])->name('social.redirect');
 Route::get('/auth/google/callback', [SocialController::class, 'callback'])->name('social.callback');
 
@@ -43,6 +43,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // 2.1 Módulo Administradores
+    // AJUSTES: Se mapea al nombre exacto de tus métodos: 'listado' y 'formulario'
     Route::get('/administrador', [AdministradorController::class, 'listado'])->name('administrador.index');
     Route::get('/administrador/crear', [AdministradorController::class, 'formulario'])->name('administrador.crear');
     Route::post('/administrador/guardar', [AdministradorController::class, 'guardar'])->name('administrador.guardar');

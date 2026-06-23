@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 
 @section('titulo', 'Panel Administrativo - Kraneo Café')
 
@@ -139,23 +139,4 @@
         </div>
     </div>
 </div>
-
-<style>
-    .border-dorado-kraneo {
-        border-color: #d4af37 !important;
-    }
-    .text-dorado-kraneo {
-        color: #d4af37 !important;
-    }
-    .bg-black {
-        background-color: #0b0c10 !important;
-    }
-    .metric-card {
-        transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .metric-card:hover {
-        transform: translateY(-5px);
-        border-color: #d4af37 !important;
-    }
-</style>
 @endsection
