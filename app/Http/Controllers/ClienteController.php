@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator; // Requerido para la tarea
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage; // Fachada para la limpieza opcional de fotos viejas
 
 class ClienteController extends Controller
 {
@@ -20,9 +21,19 @@ class ClienteController extends Controller
         return view('cliente.list-cliente', compact('clientes'));
     }
 
+    public function ver($id)
+{
+    $cliente = Cliente::find($id);
+    
+    if (!$cliente) {
+        return redirect()->route('cliente.index')->with('error', 'Cliente no encontrado.');
+    }
+
+    return view('cliente.Ver-cliente', compact('cliente'));
+}
+
     public function guardar(Request $request)
     {
-        // Se mantiene validación básica para el registro
         $request->validate([
             'nombres'     => 'required|max:100',
             'apellidos'   => 'required|max:100',
@@ -31,7 +42,7 @@ class ClienteController extends Controller
             'telefono'    => 'nullable|max:20',
             'direccion'   => 'nullable|max:255',
             'estado'      => 'required|in:Activo,Inactivo',
-            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'imagen'      => 'required|image|mimes:jpeg,png,jpg|max:2048' // Cambiado a required
         ]);
 
         $cliente = new Cliente();
@@ -42,14 +53,17 @@ class ClienteController extends Controller
         $cliente->telefono  = $request->input('telefono');
         $cliente->direccion = $request->input('direccion');
         $cliente->estado    = $request->input('estado');
+        
+        $cliente->imagen    = 'imagenes/clientes/producto_default.jpg';
+        $cliente->save();
 
+        // Guardar archivo con el ID generado por el primer save
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
-            $nombreImagen = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('imagenes/clientes'), $nombreImagen); 
-            $cliente->imagen = 'imagenes/clientes/' . $nombreImagen;
-        } else {
-            $cliente->imagen = 'default-user.jpg';
+            
+            $nombreImagen = 'clientes_' . $cliente->id_cliente . '_1.' . $file->getClientOriginalExtension();
+            $ruta = $file->storeAs('imagenes/clientes', $nombreImagen, 'public');
+            $cliente->imagen = url('storage/' . $ruta);
         }
 
         $cliente->save();
@@ -68,13 +82,12 @@ class ClienteController extends Controller
 
     public function actualizar(Request $request, $id)
     {
-        // 1. Validar que el ID exista (Requisito de la tarea)
         $cliente = Cliente::find($id);
         if (!$cliente) {
             return redirect()->route('cliente.index')->with('error', 'Cliente no encontrado.');
         }
 
-        // 2. Implementar validación con la clase Validator (Requisito de la tarea)
+        // Validación con Validator
         $validator = Validator::make($request->all(), [
             'nombres'     => 'required|max:100',
             'apellidos'   => 'required|max:100',
@@ -83,7 +96,7 @@ class ClienteController extends Controller
             'telefono'    => 'nullable|max:20',
             'direccion'   => 'nullable|max:255',
             'estado'      => 'required|in:Activo,Inactivo',
-            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048' 
         ], [
             'password.confirmed' => 'Las contraseñas no coinciden.'
         ]);
@@ -92,7 +105,6 @@ class ClienteController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // 3. Procesar actualización
         $cliente->nombres   = $request->input('nombres');
         $cliente->apellidos = $request->input('apellidos');
         $cliente->email     = $request->input('email');
@@ -105,11 +117,19 @@ class ClienteController extends Controller
         $cliente->direccion = $request->input('direccion');
         $cliente->estado    = $request->input('estado');
 
+        // Procesar cambio de imagen siguiendo el formato de clase
         if ($request->hasFile('imagen')) {
+            // Opcional: Borrar archivo viejo físico de storage si existe para optimizar espacio
+            $nombreAnterior = basename($cliente->imagen);
+            if ($nombreAnterior && Storage::disk('public')->exists('imagenes/clientes/' . $nombreAnterior)) {
+                Storage::disk('public')->delete('imagenes/clientes/' . $nombreAnterior);
+            }
+
             $file = $request->file('imagen');
-            $nombreImagen = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('imagenes/clientes'), $nombreImagen); 
-            $cliente->imagen = 'imagenes/clientes/' . $nombreImagen;
+            $nombreImagen = 'clientes_' . $cliente->id_cliente . '_1.' . $file->getClientOriginalExtension();
+            $ruta = $file->storeAs('imagenes/clientes', $nombreImagen, 'public');
+            
+            $cliente->imagen = url('storage/' . $ruta);
         }
 
         $cliente->save();

@@ -210,7 +210,7 @@
                         </h5>
 
                         <p>
-                            <strong>USD → MXN:</strong>
+                            <strong>1 USD → MXN:</strong>
                             $<span id="tipoCambio">--</span>
                         </p>
 
