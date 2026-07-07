@@ -32,6 +32,7 @@ class AdministradorController extends Controller
      */
     public function guardar(Request $request)
     {
+        // CARGA DUAL: Se usa 'required_without' para exigir al menos un método multimedia
         $request->validate([
             'nombres' => 'required|string|max:100',
             'apellidos' => 'required|string|max:100',
@@ -39,9 +40,12 @@ class AdministradorController extends Controller
             'email' => 'required|email|unique:administradores,email',
             'email_confirmation' => 'required|same:email',
             'password' => 'required|string|min:6',
-            'foto_archivo' => 'required|image|mimes:jpeg,png,jpg|max:2048', // RÚBRICA: Requerido en crear
+            'foto_archivo' => 'required_without:foto_url|nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_url' => 'required_without:foto_archivo|nullable|url',
         ], [
             'email_confirmation.same' => 'Los correos electrónicos introducidos no coinciden.',
+            'foto_archivo.required_without' => 'Debes adjuntar un archivo de imagen o proporcionar una URL válida.',
+            'foto_url.required_without' => 'Debes adjuntar un archivo de imagen o proporcionar una URL válida.',
         ]);
 
         $administrador = new Administrador();
@@ -50,15 +54,23 @@ class AdministradorController extends Controller
         $administrador->rol       = $request->input('rol');
         $administrador->usuario   = $request->input('usuario');
         $administrador->email     = $request->input('email');
-        $administrador->password  = Hash::make($request->input('password')); 
-        $administrador->estado    = 'Activo';
         
-        // Imagen por default antes de guardar para obtener el ID generado
-        $administrador->imagen_url = 'imagenes/personal/producto_default.jpg';
+        $administrador->contraseña = Hash::make($request->input('password')); 
+        
+        // CORREGIDO: Usamos la columna 'activo' de tu BD (1 = Activo)
+        $administrador->activo    = 1; 
+        
+        // Si el usuario prefirió usar una URL directa, la asignamos de inmediato
+        if ($request->filled('foto_url')) {
+            $administrador->imagen_url = $request->input('foto_url');
+        } else {
+            // De lo contrario, un valor por defecto temporal para realizar el primer insert
+            $administrador->imagen_url = 'imagenes/personal/producto_default.jpg';
+        }
 
-        $administrador->save(); // Primer save para obtener el id_admin
+        $administrador->save(); // Primer save para obtener el id_admin generado
 
-        // IGUAL AL EJEMPLO DE CLASE (CORREGIDO PARA STORAGE)
+        // Si se subió un archivo físico local, este tiene prioridad y se procesa en el Storage
         if ($request->hasFile('foto_archivo')) {
             $file = $request->file('foto_archivo');
             
@@ -70,9 +82,8 @@ class AdministradorController extends Controller
             
             // Genera la URL pública limpia vinculada al enlace simbólico
             $administrador->imagen_url = Storage::url($ruta);
+            $administrador->save(); // Segundo save final solo si se sobrescribió con archivo
         }
-
-        $administrador->save(); // Segundo save final
 
         return redirect()->route('administrador.index')->with('success', '¡Personal registrado con éxito!');
     }
@@ -106,15 +117,17 @@ class AdministradorController extends Controller
             return redirect()->route('administrador.index')->with('error', 'Administrador no encontrado.');
         }
 
+        // CORREGIDO: Cambiada la validación de 'estado' a 'activo' (debe recibir 1 o 0 desde el select/input)
         $validator = Validator::make($request->all(), [
             'nombres'      => 'required|max:100',
             'apellidos'    => 'required|max:100',
             'email'        => 'required|email|max:150|unique:administradores,email,' . $id . ',id_admin',
             'usuario'      => 'required|max:50|unique:administradores,usuario,' . $id . ',id_admin',
             'rol'          => 'required|max:50',
-            'estado'       => 'required|in:Activo,Inactivo',
+            'activo'       => 'required|in:1,0', 
             'password'     => 'nullable|min:3',
-            'foto_archivo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // RÚBRICA: Opcional en editar
+            'foto_archivo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_url'     => 'nullable|url'
         ]);
 
         if ($validator->fails()) {
@@ -126,15 +139,17 @@ class AdministradorController extends Controller
         $administrador->email     = $request->input('email');
         $administrador->usuario   = $request->input('usuario');
         $administrador->rol       = $request->input('rol');
-        $administrador->estado    = $request->input('estado'); // Corregido para que respete lo enviado en la edición
+        
+        // CORREGIDO: Asignamos a la columna real 'activo'
+        $administrador->activo    = $request->input('activo'); 
 
         if ($request->filled('password')) {
-            $administrador->password = Hash::make($request->input('password'));
+            $administrador->contraseña = Hash::make($request->input('password'));
         }
 
-        
+        // CARGA DUAL EN EDICIÓN: Prioridad al archivo subido, de lo contrario verifica la URL de texto
         if ($request->hasFile('foto_archivo')) {
-            // Eliminar la foto vieja física del Storage usando el nombre del archivo
+            // Eliminar la foto física local vieja del Storage si existía
             $nombreAnterior = basename($administrador->imagen_url);
             if ($nombreAnterior && Storage::disk('public')->exists('imagenes/personal/' . $nombreAnterior)) {
                 Storage::disk('public')->delete('imagenes/personal/' . $nombreAnterior);
@@ -144,8 +159,10 @@ class AdministradorController extends Controller
             $nombre = 'administradores_' . $administrador->id_admin . '_1.' . $file->getClientOriginalExtension();
             $ruta = $file->storeAs('imagenes/personal', $nombre, 'public');
             
-            //  Genera la URL pública limpia vinculada al enlace simbólico
             $administrador->imagen_url = Storage::url($ruta);
+        } elseif ($request->filled('foto_url')) {
+            // Si no subió un archivo físico pero actualizó el campo de la URL externa
+            $administrador->imagen_url = $request->input('foto_url');
         }
 
         $administrador->save();
@@ -153,8 +170,7 @@ class AdministradorController extends Controller
         return redirect()->route('administrador.index')->with('success', '¡Empleado actualizado correctamente!');
     } 
 
-    //Soft Delete: Cambia el estado a 'Inactivo' enviándolo al archivo muerto.//
-
+    // Soft Delete: Cambia el estado a '0' (Inactivo) enviándolo al archivo muerto.
     public function eliminarLog($id_admin)
     {
         $administrador = Administrador::find($id_admin);
@@ -163,13 +179,14 @@ class AdministradorController extends Controller
             return redirect()->route('administrador.index')->with('error', 'Administrador no encontrado.');
         }
 
-        $administrador->estado = 'Inactivo';
+        // CORREGIDO: Cambiado de 'estado' a 'activo' asignando 0
+        $administrador->activo = 0;
         $administrador->save();
 
         return redirect()->route('administrador.index')->with('success', 'El administrador ha sido enviado al archivo muerto.');
     }
 
-    //Restaurar: Revierte el estado a 'Activo' regresándolo del archivo muerto.//
+    // Restaurar: Revierte el estado a '1' (Activo) regresándolo del archivo muerto.
     public function restaurar($id_admin)
     {
         $administrador = Administrador::find($id_admin);
@@ -178,15 +195,14 @@ class AdministradorController extends Controller
             return redirect()->route('administrador.archivo')->with('error', 'Administrador no encontrado.');
         }
 
-        $administrador->estado = 'Activo';
+        // CORREGIDO: Cambiado de 'estado' a 'activo' asignando 1
+        $administrador->activo = 1;
         $administrador->save();
 
         return redirect()->route('administrador.archivo')->with('success', 'El administrador ha sido restaurado con éxito.');
     }
 
-    
-     //Hard Delete: Elimina definitivamente el registro de la BD y purga su archivo de imagen.//
-    
+     // Destruir: Elimina permanentemente el registro del administrador y su imagen física local si existe.
     public function destruir($id_admin)
     {
         $administrador = Administrador::find($id_admin);
@@ -195,7 +211,6 @@ class AdministradorController extends Controller
             return redirect()->route('administrador.archivo')->with('error', 'Administrador no encontrado.');
         }
 
-        // Limpieza de almacenamiento físico
         $nombreAnterior = basename($administrador->imagen_url);
         if ($nombreAnterior && $nombreAnterior !== 'producto_default.jpg') {
             if (Storage::disk('public')->exists('imagenes/personal/' . $nombreAnterior)) {
@@ -203,7 +218,6 @@ class AdministradorController extends Controller
             }
         }
 
-        // Ejecución del Hard Delete real en la tabla
         $administrador->delete();
 
         return redirect()->route('administrador.archivo')->with('success', 'Administrador eliminado permanentemente del sistema.');

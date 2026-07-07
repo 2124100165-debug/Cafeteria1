@@ -11,65 +11,43 @@ class SocialController extends Controller
 {
     /**
      * Redirige al usuario al proveedor de autenticación (Google).
-     * Nota: Añadimos stateless() porque las APIs no dependen de sesiones tradicionales.
      */
     public function redirect()
     {
-        return Socialite::driver('google')->stateless()->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
     /**
-     * Maneja el retorno (callback) de Google y responde en formato API (JSON).
+     * Maneja el retorno (callback) de Google.
      */
     public function callback()
     {
         try {
-            // Usamos stateless() para capturar al usuario sin conflictos de sesión
-            $userSocial = Socialite::driver('google')->stateless()->user();
+            $userSocial = Socialite::driver('google')->user();
 
-            // 1. Buscar si el correo de la red social existe en la tabla de administradores
+            // 1. Buscar si el correo de la red social existe en la tabla administradores
             $admin = Administrador::where('email', $userSocial->getEmail())->first();
 
             if ($admin) {
-                // 2. CORRECCIÓN: Validamos contra tu columna real 'estado' y su valor 'Activo'
-                if ($admin->estado === 'Activo') {
+                // 2. Validamos contra tu columna real 'activo' (1 = Activo)
+                if ($admin->activo == 1) {
                     
-                    // 3. LOGUEAR MANUALMENTE EN EL GUARD 'admin'
+                    // 3. CORRECCIÓN CLAVE: Loguear especificando el guard 'admin'
                     Auth::guard('admin')->login($admin);
                    
-                    // RESPUESTA TIPO API: Retornamos un JSON con éxito (Esta es tu evidencia)
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'Autenticación exitosa mediante API de Google',
-                        'admin' => [
-                            'id' => $admin->id_admin,
-                            'nombre' => $admin->nombres . ' ' . $admin->apellidos,
-                            'usuario' => $admin->usuario,
-                            'email' => $admin->email,
-                            'rol' => $admin->rol
-                        ]
-                    ], 200);
+                    // Redirige al dashboard principal con un mensaje de éxito
+                    return redirect()->route('dashboard')->with('success', 'Autenticación exitosa mediante Google');
 
                 } else {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Cuenta de administrador inactiva.'
-                    ], 403);
+                    return redirect()->route('login')->with('error', 'Esta cuenta administrativa se encuentra inactiva.');
                 }
             }
 
-            // Si no existe en la tabla de administradores, rechazar acceso en formato JSON
-            return response()->json([
-                'status' => 'error',
-                'message' => 'No tienes permisos de administrador.'
-            ], 401);
+            // Si no existe en la tabla de administradores, rechazar acceso
+            return redirect()->route('login')->with('error', 'El correo de Google no pertenece a un administrador autorizado.');
             
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Ocurrió un error en la API al iniciar sesión con Google.',
-                'error' => $e->getMessage()
-            ], 500);
+            return redirect()->route('login')->with('error', 'Ocurrió un error al iniciar sesión con Google: ' . $e->getMessage());
         }
     }
 }

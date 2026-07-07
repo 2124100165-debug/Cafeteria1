@@ -12,7 +12,6 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -95,7 +94,7 @@
 
                         </ul>
 
-                    </li>
+                    </li >
 
                     @endforeach
 
@@ -135,7 +134,6 @@
         </div>
     </nav>
 
-    <!-- PANEL DE GEOLOCALIZACIÓN -->
     <div class="container mt-3">
 
         <div class="card shadow api-card">
@@ -151,7 +149,6 @@
 
                 <div class="row text-center">
 
-                    <!-- UBICACIÓN -->
                     <div class="col-md-4">
 
                         <h5>
@@ -176,7 +173,6 @@
 
                     </div>
 
-                    <!-- CLIMA -->
                     <div class="col-md-4">
 
                         <h5>
@@ -201,7 +197,6 @@
 
                     </div>
 
-                    <!-- TIPO DE CAMBIO -->
                     <div class="col-md-4">
 
                         <h5>
@@ -231,6 +226,8 @@
     <footer class="kraneo-footer">
         <p>© 2026 Kraneo Café - Sistema de Gestión de Base de Datos</p>
     </footer>
+
+    @stack('scripts')
 
 </body>
 </html>

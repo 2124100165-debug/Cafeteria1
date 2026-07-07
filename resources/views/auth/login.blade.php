@@ -57,6 +57,17 @@
                                 <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
                             </button>
                         </div>
+
+                        <div class="text-center my-4 position-relative">
+                            <hr class="text-secondary opacity-25">
+                            <span class="position-absolute top-50 start-50 translate-middle bg-black px-3 text-muted small fw-semibold" style="letter-spacing: 1px;">Ó</span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a href="{{ url('/login/google') }}" class="btn btn-outline-light d-flex align-items-center justify-content-center py-2 fw-semibold">
+                                <i class="bi bi-google me-2 text-danger"></i> Continuar con Google
+                            </a>
+                        </div>
                     </form>
 
                 </div>
@@ -74,9 +85,11 @@
         const eyeIcon = document.querySelector('#eyeIcon');
 
         togglePassword.addEventListener('click', function () {
+            // Cambia el tipo de input entre password y text
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
             
+            // Alterna el icono del ojo abierto / cerrado
             if (type === 'text') {
                 eyeIcon.classList.remove('bi-eye-fill');
                 eyeIcon.classList.add('bi-eye-slash-fill');

@@ -13,31 +13,25 @@ class Administrador extends Authenticatable
     protected $primaryKey = 'id_admin';
     public $timestamps = false; 
 
+    // CRÍTICO: Desactiva el mapeo automático que genera el error "Unknown column 'password'"
+    public static $passwordAttributeMapping = false;
+
     protected $fillable = [
         'nombres', 
         'apellidos', 
         'rol', 
         'usuario', 
         'email', 
-        'contraseña', // Tu columna en phpMyAdmin
+        'contraseña', 
         'imagen_url', 
-        'activo'      // Tu columna en phpMyAdmin
+        'activo' // Cambiado para que coincida con tu base de datos (activo en vez de estado)
     ];
 
-    /**
-     * OBLIGATORIO DE LA RÚBRICA:
-     * Le indica a Laravel que la columna que almacena el hash de la clave se llama 'contraseña'.
-     */
     public function getAuthPassword()
     {
         return $this->contraseña;
     }
 
-    /**
-     * SOLUCIÓN AL ERROR: 
-     * Sobrescribimos el nombre de la columna para el sistema de Hash automatizado de Laravel.
-     * Esto evita que intente hacer un UPDATE a la columna inexistente 'password'.
-     */
     public function getAuthPasswordName()
     {
         return 'contraseña';
