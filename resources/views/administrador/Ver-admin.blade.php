@@ -41,9 +41,14 @@
                             <label class="text-dorado-kraneo fw-bold">Rol</label>
                             <input type="text" class="form-control bg-secondary text-white border-0" value="{{ $administrador->rol }}" readonly>
                         </div>
+                        
+                        {{-- ESTADO CORREGIDO: Evaluando la columna numérica 'activo' (1 / 0) --}}
                         <div class="col-md-6 mb-3">
                             <label class="text-dorado-kraneo fw-bold">Estado</label>
-                            <input type="text" class="form-control {{ $administrador->estado == 'Activo' ? 'bg-success' : 'bg-danger' }} text-white border-0" value="{{ $administrador->estado }}" readonly>
+                            <input type="text" 
+                                   class="form-control {{ $administrador->activo == 1 ? 'bg-success' : 'bg-danger' }} text-white border-0" 
+                                   value="{{ $administrador->activo == 1 ? 'Activo' : 'Inactivo' }}" 
+                                   readonly>
                         </div>
                     </div>
                 </div>

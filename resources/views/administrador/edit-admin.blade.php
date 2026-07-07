@@ -52,11 +52,13 @@
                                 <label for="rol" class="form-label text-dorado-kraneo fw-bold">Rol o Puesto</label>
                                 <input type="text" class="form-control bg-dark text-white border-secondary" id="rol" name="rol" value="{{ old('rol', $administrador->rol) }}" required>
                             </div>
+                            
+                            {{-- CORREGIDO: Cambiado de 'estado' a 'activo' usando valores enteros (1 y 0) --}}
                             <div class="col-md-6 mb-3">
-                                <label for="estado" class="form-label text-dorado-kraneo fw-bold">Estado</label>
-                                <select name="estado" id="estado" class="form-select bg-dark text-white border-secondary" required>
-                                    <option value="Activo" {{ old('estado', $administrador->estado) == 'Activo' ? 'selected' : '' }}>Activo</option>
-                                    <option value="Inactivo" {{ old('estado', $administrador->estado) == 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
+                                <label for="activo" class="form-label text-dorado-kraneo fw-bold">Estado</label>
+                                <select name="activo" id="activo" class="form-select bg-dark text-white border-secondary" required>
+                                    <option value="1" {{ old('activo', $administrador->activo) == 1 ? 'selected' : '' }}>Activo</option>
+                                    <option value="0" {{ old('activo', $administrador->activo) == 0 ? 'selected' : '' }}>Inactivo</option>
                                 </select>
                             </div>
                         </div>
@@ -74,7 +76,7 @@
                             @if($administrador->imagen_url)
                                 <div class="mb-2">
                                     <small class="text-white-50">Imagen actual:</small><br>
-                                    <img src="{{ asset($administrador->imagen_url) }}" alt="Perfil" width="60" class="rounded-circle">
+                                    <img src="{{ asset($administrador->imagen_url) }}" alt="Perfil" width="60" class="rounded-circle border border-warning m-1">
                                 </div>
                             @endif
                             <div class="row">
@@ -84,7 +86,10 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="foto_url" class="form-label text-white-50 small">O cambiar URL:</label>
-                                    <input type="url" class="form-control bg-black text-white border-secondary" id="foto_url" name="foto_url" value="{{ old('foto_url', $administrador->imagen_url) }}">
+                                    {{-- OPTIMIZADO: Solo muestra la URL si empieza con http/https, evitando pintar rutas locales como /storage/... --}}
+                                    <input type="url" class="form-control bg-black text-white border-secondary" id="foto_url" name="foto_url" 
+                                           value="{{ str_starts_with($administrador->imagen_url, 'http') ? old('foto_url', $administrador->imagen_url) : old('foto_url') }}" 
+                                           placeholder="https://ejemplo.com/foto.jpg">
                                 </div>
                             </div>
                         </div>

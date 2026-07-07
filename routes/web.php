@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // 1. IMPORTACIÓN EXPLÍCITA DE CONTROLADORES
-// =========================================================================
+// 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdministradorController;
@@ -17,23 +17,47 @@ use App\Http\Controllers\ProductoPresentacionController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SocialController;
+use Illuminate\Support\Str;
 
 // Vista de inicio base (Pública)
 Route::view('/', 'inicio')->name('inicio');
-
 // Ruta para API de tipo de cambio (Pública)
 Route::get('/api/datos', [ApiController::class, 'datos'])->name('api.datos');
-
 // Rutas de Autenticación Públicas
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-
 // Rutas de Socialite (Acceso con Google)
-Route::get('/auth/google', [SocialController::class, 'redirect'])->name('social.redirect');
-Route::get('/auth/google/callback', [SocialController::class, 'callback'])->name('social.callback');
+Route::get('/auth/google', function () { return Socialite::driver('google')->redirect();})->name('google.login'); // Mantenemos el nombre que elegiste
 
-// 2. ACCESO RESTRINGIDO (Middleware de Autenticación con Guard 'admin')
-// =========================================================================
+Route::get('/auth/google/callback', function () {
+    try {
+        $googleUser = Socialite::driver('google')->user();
+        
+        // 1. Buscamos si el correo existe en tu tabla real 'administradores'
+        $admin = Administrador::where('email', $googleUser->getEmail())->first();
+        
+        if (!$admin) {
+            // OPCIÓN ESTRICTA: Si no existe, no lo dejamos registrarse solo. Lo mandamos al login con error.
+            return redirect()->route('login')->with('error', 'El correo de Google no pertenece a un administrador autorizado.');
+        }
+
+        // 2. Validamos contra tu columna real 'activo' (1 = Activo, 0 = Inactivo)
+        if ($admin->activo == 0) {
+            return redirect()->route('login')->with('error', 'Esta cuenta administrativa se encuentra inactiva.');
+        }
+
+        // 3. LOGUEAR EN EL GUARD 'admin' QUE TIENEN TUS RUTAS PROTEGIDAS
+        Auth::guard('admin')->login($admin);
+
+        // Redirección exitosa al dashboard protegido
+        return redirect()->route('dashboard')->with('success', '¡Autenticado con Google con éxito!');
+
+    } catch (\Exception $e) {
+        return redirect()->route('login')->with('error', 'Error al conectar con Google.');
+    }
+});
+
+// 2. ACCESO RESTRINGIDO (Middleware de Autenticación con Guard 'admin')//
 Route::middleware(['auth:admin'])->group(function () {
     
     // Vista de Dashboard
@@ -48,8 +72,8 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/administrador/guardar', [AdministradorController::class, 'guardar'])->name('administrador.guardar');
     Route::get('/administrador/editar/{id}', [AdministradorController::class, 'editar'])->name('administrador.editar');
     Route::post('/administrador/actualizar/{id}', [AdministradorController::class, 'actualizar'])->name('administrador.actualizar');
-    Route::post('/administrador/eliminarLog/{id}', [AdministradorController::class, 'eliminarLog'])->name('administrador.eliminarLog');
-    Route::get('/administrador/mostrar/{id}', [AdministradorController::class, 'ver'])->name('administrador.mostrar');
+    Route::post('/administrador/eliminarLog/{id}', [AdministradorController::class, 'eliminarLog'])->name('administrador.eliminarLog'); // Ruta para eliminar lógicamente (soft delete)
+    Route::get('/administrador/mostrar/{id}', [AdministradorController::class, 'ver'])->name('administrador.mostrar');// Ruta para ver detalles del administrador
     Route::post('/administrador/storage-link', function () {Artisan::call('storage:link'); return 'Enlace simbólico creado exitosamente.';})->name('administrador.storage-link'); // Ruta para crear el enlace simbólico de almacenamiento (si es necesario)
 
 
