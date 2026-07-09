@@ -6,7 +6,7 @@ use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage; // Fachada para la limpieza opcional de fotos viejas
+use Illuminate\Support\Facades\Storage; 
 
 class ClienteController extends Controller
 {
